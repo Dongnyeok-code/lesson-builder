@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "2단계 평가 먼저 설계 (assessment.json)",
+  "type": "object",
+  "required": ["objectives", "evidence", "success_criteria", "growth_levels", "checks", "self_check"],
+  "properties": {
+    "objectives": {
+      "type": "object",
+      "required": ["focus", "knowledge", "skill", "attitude"],
+      "properties": {
+        "focus": {"enum": ["knowledge", "skill", "attitude"]},
+        "knowledge": {"type": "string"},
+        "skill": {"type": "string"},
+        "attitude": {"type": "string"}
+      }
+    },
+    "evidence": {
+      "type": "array", "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["domain", "type", "how"],
+        "properties": {
+          "domain": {"enum": ["knowledge", "skill", "attitude"]},
+          "type": {"enum": ["말하기", "쓰기", "고르기", "만들기", "실습 관찰", "자기 점검"]},
+          "how": {"type": "string"}
+        }
+      }
+    },
+    "success_criteria": {
+      "type": "array", "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["domain", "student", "not_yet"],
+        "properties": {
+          "domain": {"enum": ["knowledge", "skill", "attitude"]},
+          "student": {"type": "string"},
+          "not_yet": {"type": "string"}
+        }
+      }
+    },
+    "growth_levels": {
+      "type": "object",
+      "required": ["knowledge", "skill", "attitude"],
+      "additionalProperties": {
+        "type": "object",
+        "required": ["deepening", "achieving", "starting"],
+        "properties": {
+          "deepening": {"type": "string"},
+          "achieving": {"type": "string"},
+          "starting": {"type": "string"}
+        }
+      }
+    },
+    "checks": {
+      "type": "object",
+      "required": ["intro", "hinge", "exit"],
+      "properties": {
+        "intro": {"type": "object", "required": ["question", "purpose"]},
+        "hinge": {
+          "type": "object",
+          "required": ["question", "options"],
+          "properties": {
+            "question": {"type": "string"},
+            "options": {
+              "type": "array", "minItems": 3,
+              "items": {
+                "type": "object",
+                "required": ["text"],
+                "properties": {
+                  "text": {"type": "string"},
+                  "correct": {"type": "boolean"},
+                  "misconception": {"type": "string"},
+                  "teacher_move": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "exit": {"type": "object", "required": ["question", "domain"]}
+      }
+    },
+    "self_check": {"type": "array", "items": {"type": "string"}, "minItems": 2}
+  }
+}

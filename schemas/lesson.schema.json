@@ -1,0 +1,282 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "6단계 제작 입력 (lesson.json) — build.py가 읽는 유일한 파일",
+  "type": "object",
+  "required": [
+    "meta",
+    "curriculum",
+    "assessment",
+    "evidence",
+    "flow",
+    "media",
+    "worksheet"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "title",
+        "grade",
+        "subject",
+        "unit",
+        "periods",
+        "minutes",
+        "lesson_type"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "grade": {
+          "type": "integer"
+        },
+        "subject": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "integer"
+        },
+        "periods": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "minutes": {
+          "type": "integer"
+        },
+        "lesson_type": {
+          "enum": [
+            "A-개념탐색",
+            "B-실습",
+            "C-문제해결"
+          ]
+        },
+        "theme": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "colors": {
+              "type": "object"
+            },
+            "background": {
+              "type": "string"
+            },
+            "bullet": {
+              "type": "string"
+            },
+            "title_decoration": {
+              "type": "string"
+            },
+            "extra_css": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "curriculum": {
+      "$ref": "curriculum.schema.json"
+    },
+    "assessment": {
+      "$ref": "assessment.schema.json"
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "kind",
+          "content",
+          "page"
+        ],
+        "properties": {
+          "kind": {
+            "enum": [
+              "용어",
+              "예시",
+              "활동",
+              "그림",
+              "발문",
+              "유의점"
+            ]
+          },
+          "content": {
+            "type": "string"
+          },
+          "page": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "flow": {
+      "type": "object",
+      "required": [
+        "approved",
+        "steps"
+      ],
+      "properties": {
+        "approved": {
+          "const": true
+        },
+        "teacher_note": {
+          "type": "string"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "phase",
+              "minutes",
+              "activity",
+              "evidence_link"
+            ],
+            "properties": {
+              "phase": {
+                "type": "string"
+              },
+              "minutes": {
+                "type": "integer"
+              },
+              "activity": {
+                "type": "string"
+              },
+              "evidence_link": {
+                "type": "string"
+              },
+              "materials": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "type",
+          "source"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "video",
+              "image",
+              "placeholder"
+            ]
+          },
+          "videoId": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "source": {
+            "type": "string"
+          },
+          "license": {
+            "type": "string"
+          },
+          "credit": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "slides": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": [
+          "type"
+        ],
+        "properties": {
+          "type": {
+            "enum": [
+              "title",
+              "goals",
+              "text",
+              "cards",
+              "reveal",
+              "stage",
+              "image",
+              "fillblank",
+              "video",
+              "activity",
+              "oxquiz",
+              "hinge",
+              "write",
+              "exit",
+              "self_check",
+              "sources",
+              "closing",
+              "criteria",
+              "word"
+            ]
+          }
+        }
+      }
+    },
+    "worksheet": {
+      "type": "object",
+      "required": [
+        "sections"
+      ],
+      "properties": {
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "type"
+            ],
+            "properties": {
+              "type": {
+                "enum": [
+                  "write",
+                  "box",
+                  "table",
+                  "choice",
+                  "text"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "sessions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "label",
+          "slides"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "slides": {
+            "$ref": "#/properties/slides"
+          }
+        }
+      }
+    }
+  }
+}

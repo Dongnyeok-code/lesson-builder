@@ -1,0 +1,26 @@
+# 교과서·지도서 내용이 들어 있는 실제 예시와 백업 (공개하지 않음)
+examples/_private/
+_old/
+**/lesson.before_*.json
+
+# 교과서·지도서 원본과 추출본은 출판사 저작물이라 올리지 않음
+*.pdf
+*.hwp
+*.hwpx
+**/tb.md
+**/gd.md
+**/gdp.md
+**/images/tb/
+**/images/gd/
+**/images/page/
+**/images/crop/
+**/images/_sheets/
+
+# 실행하면 생기는 파일
+__pycache__/
+*.pyc
+node_modules/
+shots/
+**/shots/
+.DS_Store
+Thumbs.db

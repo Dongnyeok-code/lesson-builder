@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1단원 1차시 - 로봇의 세 장치 (1차시, 가상 예시)</title>
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+<style>
+:root{
+  --ink:#1F252B; --muted:#68737D; --line:#C9D9E6;
+  --cream:#FAF6EE; --mint:#E9F5E6; --sky:#DDF1FB; --pinkbg:#FCE6EF; --navy:#16324F; --white:#FFFFFF;
+  --blue:#2E73B8; --green:#4DAA45; --pink:#EB3E86; --yellow:#F7C948; --lightblue:#8ACBFF; --lightpink:#FF9FC3;
+}
+:root{--cream:#F2F5F8;--mint:#E2F3F1;--sky:#E7EEF7;--pinkbg:#FCEEE4;--navy:#13233D;--blue:#2A5C9E;--green:#13877F;--pink:#D9682A;--yellow:#F0B43A;--ink:#1A2330;--muted:#5D6977;--line:#C7D2DD;--lightblue:#7ED3CC;}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{word-break:keep-all;overflow-wrap:break-word;height:100%;background:#2b2f33;font-family:'Pretendard','Noto Sans KR',sans-serif;font-weight:500;color:var(--ink);overflow:hidden}
+#ui-top{position:fixed;left:0;right:0;top:0;height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;z-index:5}
+#tabs{display:flex;gap:6px}
+.tab{border:1px solid rgba(255,255,255,.35);background:transparent;color:#cfd6dc;font:600 14px Pretendard;padding:6px 14px;border-radius:4px;cursor:pointer}
+.tab.active{background:#fff;color:var(--navy);border-color:#fff}
+.uibtn{border:1px solid rgba(255,255,255,.35);background:transparent;color:#e6ebef;font:600 13px Pretendard;padding:6px 12px;border-radius:4px;cursor:pointer}
+.uibtn:hover,.tab:hover{border-color:#fff}
+#ui-bottom{position:fixed;left:0;right:0;bottom:0;height:44px;display:flex;align-items:center;justify-content:center;gap:16px;z-index:5;color:#cfd6dc;font:600 14px Pretendard}
+#viewport{position:fixed;left:0;right:0;top:44px;bottom:44px;display:flex;align-items:center;justify-content:center}
+body.fs #ui-top,body.fs #ui-bottom{opacity:0;transition:opacity .3s}
+body.fs #ui-top:hover,body.fs #ui-bottom:hover{opacity:1}
+body.fs #viewport{top:0;bottom:0}
+#canvas{width:1600px;height:900px;position:relative;transform-origin:center center;flex:none;overflow:hidden}
+.slide{position:absolute;inset:0;padding:64px 88px 70px;display:flex;flex-direction:column}
+.bg-cream{background:var(--cream)} .bg-mint{background:var(--mint)} .bg-sky{background:var(--sky)} .bg-pink{background:var(--pinkbg)} .bg-white{background:#fff} .bg-navy{background:var(--navy);color:#fff}
+.topbar{position:absolute;left:0;right:0;top:0;height:8px}
+.kicker{position:absolute;left:88px;top:26px;font-size:22px;color:var(--muted)}
+.bg-navy .kicker{color:#9fb3c6}
+.foot{position:absolute;left:88px;bottom:24px;font-size:22px;color:var(--muted)}
+.pno{position:absolute;right:56px;bottom:24px;font-size:22px;color:var(--muted)}
+.bg-navy .foot,.bg-navy .pno{color:#9fb3c6}
+h2.t{font-size:59px;font-weight:700;letter-spacing:-0.5px;line-height:1.25;margin-top:18px}
+.bg-navy h2.t{color:#fff;text-align:center}
+.lead{font-size:35px;color:var(--muted);margin-top:14px;line-height:1.5}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center}
+.pill{align-self:center;margin-top:28px;padding:16px 56px;border-radius:999px;color:#fff;font-size:35px;font-weight:700;text-align:center;max-width:1300px;line-height:1.4}
+.c-blue{color:var(--blue)} .c-green{color:var(--green)} .c-pink{color:var(--pink)} .c-yellow{color:#C99A12}
+.b-blue{background:var(--blue)} .b-green{background:var(--green)} .b-pink{background:var(--pink)} .b-yellow{background:#E0AE1A} .b-navy{background:var(--navy)}
+.em{color:var(--pink);font-weight:700}
+/* 목록 */
+.numlist{list-style:none;display:flex;flex-direction:column;gap:30px}
+.numlist li{display:flex;gap:28px;align-items:baseline;font-size:45px;line-height:1.5}
+.numlist .n{font-size:47px;font-weight:700;min-width:44px}
+.tagline{display:inline-block;font-size:28px;font-weight:700;padding:4px 14px;border-radius:4px;color:#fff;margin-right:16px;vertical-align:middle}
+/* 열 */
+.cols{display:grid;gap:56px;align-items:start}
+.col h3{font-size:54px;font-weight:700;padding-top:18px;border-top:5px solid currentColor;margin-bottom:16px}
+.col .d{font-size:42px;line-height:1.6;color:var(--ink)}
+.col .s{font-size:32px;line-height:1.55;color:var(--muted);margin-top:10px}
+.bg-navy .col .d{color:#fff} .bg-navy .col .s{color:#bfd0e0}
+/* 그림 */
+.imgrow{flex:1;display:flex;gap:56px;align-items:center;min-height:0;margin-top:20px}
+.imgbox{flex:0 0 auto;max-width:62%;height:100%;display:flex;flex-direction:column;justify-content:center}
+.imgbox img{max-width:100%;max-height:600px;object-fit:contain;display:block}
+.imgbox.full{max-width:100%;flex:1;align-items:center}
+.cap{font-size:28px;color:var(--muted);margin-top:12px}
+.side{flex:1;display:flex;flex-direction:column;gap:26px}
+.imgrow .imgbox:not(.full){flex:0 0 48%;max-width:48%;align-items:center}
+.imgbox:not(.full) img{width:100%;height:560px;object-fit:contain}
+.side p{font-size:38px;line-height:1.55}
+.ph{border:3px dashed var(--line);padding:60px 40px;font-size:28px;color:var(--muted);text-align:center;background:rgba(255,255,255,.5)}
+/* 낱말 */
+.word{display:grid;grid-template-columns:1.05fr 1fr;gap:70px;flex:1;align-items:center}
+.hanja{font-size:165px;font-weight:700;line-height:1.1;letter-spacing:6px}
+.wkor{font-size:61px;font-weight:700;margin-top:18px}
+.wrule{height:5px;width:520px;margin:30px 0 24px}
+.wmean{font-size:40px;line-height:1.55}
+.chars{display:flex;flex-direction:column;gap:30px}
+.chars .ch{font-size:52px;font-weight:700}
+.chars .rd{font-size:33px;color:var(--muted);margin-top:4px}
+.wex{font-size:35px;line-height:1.5;margin-top:10px;padding-top:22px;border-top:2px solid var(--line)}
+/* 퀴즈 */
+.qbox{text-align:center}
+.q{font-size:54px;font-weight:700;line-height:1.45}
+.ox{display:flex;gap:60px;justify-content:center;margin-top:50px}
+.ox button{width:170px;height:170px;border-radius:50%;border:5px solid var(--line);background:#fff;font:700 90px Pretendard;cursor:pointer}
+.ox .o{color:var(--pink)} .ox .x{color:var(--blue)}
+.ans{margin-top:34px;font-size:38px;min-height:50px;font-weight:700}
+.opts{display:flex;flex-direction:column;gap:18px;margin-top:40px;width:1100px;align-self:center}
+.opts button{font:500 42px Pretendard;text-align:left;padding:14px 30px;border:3px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.opts button.ok{border-color:var(--green);background:#eef8ec} .opts button.re{border-color:var(--yellow);background:#fff8df}
+.tpanel{display:none;position:absolute;left:180px;right:180px;top:150px;max-height:700px;overflow:auto;z-index:20;font-size:32px;line-height:1.6;color:var(--ink);background:#fff;border-left:10px solid var(--pink);padding:28px 36px;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+.tpanel.show{display:block}
+.tbtn{position:absolute;right:60px;top:28px;font:600 20px Pretendard;color:var(--muted);background:none;border:1px solid var(--line);padding:6px 16px;cursor:pointer}
+/* 빈칸 */
+.seq{display:flex;gap:22px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:40px}
+.seq .it{font-size:50px;font-weight:700;padding:22px 34px;border:3px solid var(--blue);background:#fff;min-width:200px;text-align:center}
+.seq .it.bl{border-style:dashed;color:var(--line)}
+.seq .ar{font-size:47px;color:var(--muted)}
+.cols:has(.cimg){align-items:stretch}
+.cimg{height:300px;display:flex;align-items:flex-end;justify-content:center;margin-bottom:6px}
+.cimg img{max-height:300px;max-width:100%;object-fit:contain}
+.cols:has(.cimg) h3{font-size:47px}
+.cols:has(.cimg) .d{font-size:38px}
+.sq{display:flex;flex-direction:column;align-items:center;gap:14px}
+.sq img{height:230px;width:250px;object-fit:contain}
+.seq:has(.sq) .it{min-width:180px;padding:16px 26px}
+.revealbtn{align-self:center;margin-top:40px;font:700 26px Pretendard;color:#fff;background:var(--navy);border:none;padding:14px 40px;border-radius:999px;cursor:pointer}
+/* 영상 */
+.vid{display:grid;grid-template-columns:1fr 1.6fr;gap:56px;flex:1;align-items:center}
+.vmeta .dur{font-size:99px;font-weight:700;color:var(--yellow)}
+.vmeta .vt{font-size:35px;line-height:1.5;margin-top:16px}
+.vmeta .ch{font-size:28px;color:#9fb3c6;margin-top:10px}
+.vmeta a{display:inline-block;margin-top:30px;font-size:28px;color:var(--lightblue)}
+.vframe{aspect-ratio:16/9;width:100%;background:#000}
+.vframe iframe{width:100%;height:100%;border:0}
+/* 활동 */
+.steps{display:flex;flex-direction:column;gap:26px;margin-top:10px}
+.steps .st{font-size:40px;line-height:1.5;display:block}
+.steps .st b{font-weight:700}
+.mat{margin-top:30px;font-size:28px;color:var(--muted)}
+/* 쓰기·점검 */
+.line{border-bottom:3px solid var(--line);height:80px}
+.selfrow{display:flex;justify-content:space-between;align-items:center;font-size:44px;padding:22px 0;border-bottom:2px solid var(--line)}
+.selfrow span.sc{font-size:30px;white-space:nowrap;margin-left:30px;color:var(--muted);letter-spacing:2px}
+.src{font-size:28px;line-height:1.8;color:var(--ink)}
+/* 표지 */
+.cover{display:grid;grid-template-columns:760px 1fr;height:900px;overflow:hidden}
+.cover .l{background:var(--navy);color:#fff;padding:120px 70px 60px;display:flex;flex-direction:column}
+.cover .l .ck{font-size:28px;color:#9fb3c6}
+.cover .l h1{font-size:73px;font-weight:700;line-height:1.2;margin-top:28px}
+.cover .l .sub{font-size:33px;color:#cfdbe6;margin-top:28px;line-height:1.5}
+.cover .l .pg{margin-top:auto;font-size:28px;color:var(--yellow)}
+.cover .r{background:#fff;display:flex;align-items:center;justify-content:center;padding:40px}
+.cover .r img{max-width:100%;max-height:760px;object-fit:contain}
+@media (prefers-reduced-motion:no-preference){.slide{animation:fi .25s ease}}
+@keyframes fi{from{opacity:.0}to{opacity:1}}
+
+/* 가독성 강화(교사 요청: 뒷자리에서도 읽히게) */
+.col .d{font-size:46px}.col .s{font-size:34px}.col h3{font-size:54px}
+.cols:has(.cimg) h3{font-size:48px}.cols:has(.cimg) .d{font-size:40px}
+.numlist li{font-size:50px}.numlist .n{font-size:52px}
+.side p{font-size:44px;line-height:1.5}
+.wmean{font-size:54px}.wex{font-size:46px}.chars .ch{font-size:62px}.chars .rd{font-size:38px}.wkor{font-size:72px}
+.steps .st{font-size:46px}
+.cap{font-size:30px}
+.cols.crit .d{font-size:38px;line-height:1.5}.cols.crit .s{font-size:28px}
+.src{font-size:22px;line-height:1.45;column-count:2;column-gap:48px}
+
+/* 번호 + 옅은 상자 목록 (cards list) */
+.lis{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.li{display:flex;gap:16px;align-items:baseline;font-size:38px;line-height:1.4;color:var(--ink);background:color-mix(in srgb,currentColor 8%,white);border-left:6px solid currentColor;border-radius:8px;padding:12px 18px}
+.li b{color:inherit;min-width:30px} .li span{color:var(--ink)}
+/* 소제목 슬라이드 */
+.sec{align-items:center;justify-content:center;text-align:center;color:#fff}
+.sec .sk{font-size:32px;color:var(--yellow);font-weight:700}
+.sec .st1{font-size:84px;font-weight:700;margin-top:20px;line-height:1.25}
+.sec .ss{font-size:42px;color:#cfdbe6;margin-top:26px;line-height:1.5}
+.sec .si{margin-top:30px;font-size:40px;text-align:left;color:#e7eef5;line-height:1.7}
+/* 교과서 본문 캡처 + 색연필 표시 */
+.tbk{flex:1;display:flex;align-items:center;justify-content:center;min-height:0;margin-top:14px}
+.tbin{position:relative;display:inline-block;max-width:1424px;box-shadow:0 0 0 2px var(--line)}
+.tbin img{display:block;width:1360px;max-height:640px;object-fit:contain}
+.mk{position:absolute;background:rgba(255,212,0,.42);mix-blend-mode:multiply;border-radius:38% 12% 30% 16%/40% 22% 36% 26%;transform-origin:left center;transform:scaleX(0) rotate(-0.6deg);animation:mkin .6s ease forwards;margin:-2px -4px;padding:2px 4px}
+@keyframes mkin{to{transform:scaleX(1) rotate(-0.6deg)}}
+.star{position:absolute;width:54px;height:54px;margin:-27px 0 0 -66px;opacity:0;animation:starin .4s ease forwards}
+.star path{fill:none;stroke:#e8562a;stroke-width:7;stroke-linejoin:round;stroke-linecap:round}
+@keyframes starin{from{opacity:0;transform:scale(.4) rotate(-20deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+/* 사람-로봇 비교 */
+.cmp{flex:1;display:grid;grid-template-columns:300px 1fr 300px;gap:24px;align-items:center;min-height:0;margin-top:10px;cursor:pointer}
+.cimgw{position:relative;height:640px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.cimgw img{max-height:580px;max-width:100%;object-fit:contain}
+.clab{font-size:36px;font-weight:700;margin-top:8px}
+.dot{position:absolute;width:44px;height:44px;margin:-22px 0 0 -22px;border-radius:50%;border:6px solid currentColor;background:rgba(255,255,255,.35);opacity:0;transform:scale(.3);transition:.35s}
+.dot.on{opacity:1;transform:scale(1);animation:ping 1.4s ease-out 2}
+@keyframes ping{0%{box-shadow:0 0 0 0 currentColor}100%{box-shadow:0 0 0 26px transparent}}
+.crows{display:flex;flex-direction:column;gap:26px;justify-content:center}
+.crow{display:grid;grid-template-columns:170px 1fr 190px;gap:14px;align-items:center;opacity:0;transform:translateY(18px);transition:.45s}
+.crow.on{opacity:1;transform:none}
+.chip{color:#fff;font-size:34px;font-weight:700;text-align:center;padding:10px 6px;border-radius:999px}
+.cd{font-size:30px;line-height:1.45;border:3px solid var(--line);border-radius:16px;padding:12px 16px;background:#fff}
+.chint{font-size:24px;color:var(--muted);text-align:center}
+/* 큰 글씨 그림 설명, 숨긴 정답 */
+.side.big p{font-size:54px;line-height:1.45}
+.step.hidans{display:none} .step.hidans.on{display:block;animation:fi .5s ease}
+/* 파일로 열었을 때 유튜브 썸네일 */
+.vthumb{position:relative;display:block;text-decoration:none}
+.vthumb img{width:100%;height:100%;object-fit:cover;opacity:.75}
+.vplay{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);background:#e62117;color:#fff;font-size:40px;font-weight:700;padding:18px 36px;border-radius:14px}
+.vnote{position:absolute;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);color:#fff;font-size:22px;padding:10px 16px;text-align:center}
+.src.dense{column-count:3;font-size:16px;line-height:1.4;column-gap:30px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute"><defs><filter id="crayon"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="4"/></filter></defs></svg>
+
+<div id="ui-top"><div id="tabs"></div><div style="display:flex;gap:10px;align-items:center"><span id="counter"></span><button class="uibtn" id="fsBtn">전체화면</button></div></div>
+<div id="viewport"><div id="canvas"></div></div>
+<div id="ui-bottom"><button class="uibtn" id="prevBtn">이전</button><span id="pos"></span><button class="uibtn" id="nextBtn">다음</button></div>
+<script>
+const DATA = {
+ "meta": {
+  "title": "로봇의 세 장치 (1차시, 가상 예시)",
+  "unit": 1,
+  "unit_title": "생활 속 로봇",
+  "theme": {
+   "name": "로봇 연구소 (남색·청록·은회색)",
+   "concepts": {
+    "감지 장치": "green",
+    "제어 장치": "pink",
+    "구동 장치": "blue"
+   },
+   "palette": {
+    "cream": "#F2F5F8",
+    "mint": "#E2F3F1",
+    "sky": "#E7EEF7",
+    "pinkbg": "#FCEEE4",
+    "navy": "#13233D",
+    "blue": "#2A5C9E",
+    "green": "#13877F",
+    "pink": "#D9682A",
+    "yellow": "#F0B43A",
+    "ink": "#1A2330",
+    "muted": "#5D6977",
+    "line": "#C7D2DD",
+    "lightblue": "#7ED3CC"
+   }
+  }
+ },
+ "sessions": [
+  {
+   "label": "1차시",
+   "title": "로봇의 세 장치",
+   "slides": [
+    {
+     "type": "title",
+     "kicker": "1. 생활 속 로봇 (가상 예시)",
+     "title": "1차시<br>로봇은 어떻게<br>움직일까요?",
+     "sub": "가상 예시 교과서 10~11쪽",
+     "img": "@img:0",
+     "lead": "로봇의 세 장치를 알아봐요"
+    },
+    {
+     "type": "goals",
+     "page": "10~11",
+     "focus": "knowledge",
+     "goals": [
+      {
+       "domain": "knowledge",
+       "text": "로봇의 세 장치(감지·제어·구동)가 하는 일을 알고 친구에게 설명할 수 있다"
+      },
+      {
+       "domain": "skill",
+       "text": "청소 로봇의 움직임을 세 장치가 하는 일로 나누어 활동지에 나타낼 수 있다"
+      },
+      {
+       "domain": "attitude",
+       "text": "생활 속 로봇이 주는 도움을 찾아보며 친구와 나누려고 노력할 수 있다"
+      }
+     ]
+    },
+    {
+     "type": "criteria",
+     "items": [
+      {
+       "domain": "knowledge",
+       "student": "나는 로봇의 세 장치가 하는 일을 설명할 수 있어요",
+       "not_yet": "사람 몸 비유 카드를 보며 하나씩 짚어 말해 봐요"
+      },
+      {
+       "domain": "skill",
+       "student": "나는 청소 로봇의 움직임을 세 장치로 나누어 쓸 수 있어요",
+       "not_yet": "'알아차리기 → 정하기 → 움직이기' 순서로 한 칸씩 채워 봐요"
+      },
+      {
+       "domain": "attitude",
+       "student": "나는 생활 속 로봇이 주는 도움을 친구와 나눌 수 있어요",
+       "not_yet": "집이나 학교에서 본 기계 하나를 떠올려 봐요"
+      }
+     ]
+    },
+    {
+     "type": "reveal",
+     "heading": "생각 열기",
+     "items": [
+      "스스로 움직이는<br><span class='em'>기계</span>를 본 적이 있나요?",
+      "그 기계는 <span class='em'>어떻게</span> 길을 찾았을까요?"
+     ]
+    },
+    {
+     "type": "word",
+     "word": "감지",
+     "origin": "感 느낄 감 · 知 알 지",
+     "meaning": "주변의 빛, 소리, 거리 같은 것을<br><span class='em'>알아차리는</span> 것",
+     "example": "자동문은 사람이 다가오는 것을 감지해서 열려요",
+     "page": "10"
+    },
+    {
+     "type": "section",
+     "kicker": "함께 알아봐요",
+     "title": "사람과 로봇은 어디가 닮았을까요?",
+     "sub": "다음 장부터: 누를 때마다 한 줄씩 나와요",
+     "page": "10"
+    },
+    {
+     "type": "compare",
+     "heading": "사람과 로봇의 구조 비교",
+     "page": "10",
+     "left": "@img:1",
+     "right": "@img:0",
+     "left_label": "사람",
+     "right_label": "로봇",
+     "rows": [
+      {
+       "l": "두뇌",
+       "r": "제어 장치",
+       "desc": "정보를 받아 판단하고 명령해요",
+       "color": "pink",
+       "lpos": {
+        "x": 50,
+        "y": 20
+       },
+       "rpos": {
+        "x": 50,
+        "y": 26
+       }
+      },
+      {
+       "l": "눈·귀",
+       "r": "감지 장치",
+       "desc": "주변을 알아차려요",
+       "color": "green",
+       "lpos": {
+        "x": 45,
+        "y": 23
+       },
+       "rpos": {
+        "x": 41,
+        "y": 27
+       }
+      },
+      {
+       "l": "팔·다리",
+       "r": "구동 장치",
+       "desc": "명령을 받아 움직여요",
+       "color": "blue",
+       "lpos": {
+        "x": 25,
+        "y": 53
+       },
+       "rpos": {
+        "x": 20,
+        "y": 57
+       }
+      }
+     ]
+    },
+    {
+     "type": "stage",
+     "heading": "두뇌를 닮은 제어 장치",
+     "tag": "제어 장치",
+     "src": "@img:0",
+     "caption": "로봇의 두뇌",
+     "body": "받은 정보를 보고<br><span class='em'>어떻게 할지 정해서</span><br>명령을 내려요.",
+     "page": "10",
+     "big": true
+    },
+    {
+     "type": "cards",
+     "heading": "세 장치가 하는 일",
+     "page": "10",
+     "cards": [
+      {
+       "label": "감지 장치",
+       "desc": "알아차려요"
+      },
+      {
+       "label": "제어 장치",
+       "desc": "판단하고 명령해요"
+      },
+      {
+       "label": "구동 장치",
+       "desc": "움직여요"
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "heading": "로봇이 집안일을 하면?",
+     "page": "지도서 20",
+     "list": true,
+     "cards": [
+      {
+       "label": "좋은 점",
+       "desc": "시간이 남아요<br>힘든 일을 덜어요"
+      },
+      {
+       "label": "걱정되는 점",
+       "desc": "값이 비싸요<br>고장 나면 멈춰요"
+      }
+     ],
+     "pill": "좋은 점과 걱정되는 점을 함께 생각해요"
+    },
+    {
+     "type": "fillblank",
+     "heading": "짝 맞추기: 사람의 몸 → 로봇의 장치",
+     "page": "10",
+     "sequence": [
+      "두뇌 → ?",
+      "눈·귀 → ?",
+      "팔·다리 → ?"
+     ],
+     "answer": [
+      "두뇌 → 제어 장치",
+      "눈·귀 → 감지 장치",
+      "팔·다리 → 구동 장치"
+     ]
+    },
+    {
+     "type": "oxquiz",
+     "heading": "OX 퀴즈",
+     "q": "로봇의 바퀴는 스스로 갈 방향을 정한다.",
+     "answer": "X",
+     "explain": "방향은 제어 장치가 정하고, 바퀴(구동 장치)는 명령대로 움직여요."
+    },
+    {
+     "type": "hinge",
+     "heading": "생각 점검",
+     "page": "11",
+     "question": "청소 로봇이 벽을 만나 <b>방향을 바꾸자</b>고 정하는 곳은 어디일까요?",
+     "explain": "정보를 받아 판단하고 명령하는 곳은 제어 장치예요.",
+     "options": [
+      {
+       "text": "제어 장치",
+       "correct": true
+      },
+      {
+       "text": "감지 장치",
+       "misconception": "알아차리는 일과 정하는 일을 같은 일로 보는 중",
+       "teacher_move": "눈은 보기만 하고 정하는 것은 두뇌라는 비유를 나란히 보여 주면 구별할 수 있습니다."
+      },
+      {
+       "text": "구동 장치",
+       "misconception": "바퀴가 스스로 방향을 정한다고 보는 중",
+       "teacher_move": "바퀴는 명령을 받아 움직인다는 것을 순서(감지→제어→구동)로 다시 짚어 주면 나아갈 수 있습니다."
+      }
+     ]
+    },
+    {
+     "type": "section",
+     "kicker": "스스로 적용해 봐요",
+     "title": "청소 로봇은 벽을 어떻게 피할까요?",
+     "page": "11"
+    },
+    {
+     "type": "stage",
+     "heading": "청소 로봇 ① 감지 장치",
+     "tag": "예시 답안",
+     "src": "@img:2",
+     "caption": "벽을 알아차려요",
+     "body": "센서가 앞에 <span class='em'>벽이 있다</span>는 것을 알아차려요.",
+     "page": "11",
+     "big": true,
+     "hide": true
+    },
+    {
+     "type": "activity",
+     "heading": "역량을 키우는 활동",
+     "page": "11",
+     "title": "청소 로봇 설명서 만들기",
+     "desc": "청소 로봇의 세 장치가 하는 일을<br>활동지 표에 써요.",
+     "materials": "활동지"
+    },
+    {
+     "type": "exit",
+     "prompt": "로봇의 세 장치 이름을 쓰고, 사람 몸의 어디와 닮았는지 이어 보세요."
+    },
+    {
+     "type": "self_check",
+     "items": [
+      "나는 세 장치의 이름과 하는 일을 말해 보았어요",
+      "나는 청소 로봇의 움직임을 순서대로 써 보았어요",
+      "나는 친구의 생각을 끝까지 들었어요"
+     ]
+    },
+    {
+     "type": "sources",
+     "items": [
+      "성취기준 원문 — 교육부 고시 제2022-33호 [별책 10], 국가교육과정정보센터(NCIC)",
+      "로봇 그림 — lesson-builder 예시용으로 직접 그림 (MIT (이 저장소))",
+      "사람 그림 — lesson-builder 예시용으로 직접 그림 (MIT (이 저장소))",
+      "청소 로봇 그림 — lesson-builder 예시용으로 직접 그림 (MIT (이 저장소))"
+     ]
+    },
+    {
+     "type": "closing",
+     "title": "수고했어요!",
+     "sub": "감지 → 제어 → 구동을 기억해요"
+    }
+   ]
+  }
+ ]
+};
+const IMGS = ["data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNTAwIiB4bWxuczpjMnBhPSJodHRwOi8vYzJwYS5vcmcvbWFuaWZlc3QiPjxtZXRhZGF0YT48YzJwYTptYW5pZmVzdD5BQUFXZ21wMWJXSUFBQUFlYW5WdFpHTXljR0VBRVFBUWdBQUFxZ0E0bTNFRFl6SndZUUFBQUJaY2FuVnRZZ0FBQUVkcWRXMWtZekp0WVFBUkFCQ0FBQUNxQURpYmNRTjFjbTQ2WXpKd1lUb3pZMlV4TnpFNVl5MHlaREZqTFRSaU1EVXRPR1UwTWkwek9EYzJPV05oWldFek5qWUFBQUFEbDJwMWJXSUFBQUFwYW5WdFpHTXlZWE1BRVFBUWdBQUFxZ0E0bTNFRFl6SndZUzVoYzNObGNuUnBiMjV6QUFBQUFMeHFkVzFpQUFBQVJHcDFiV1JqWW05eUFCRUFFSUFBQUtvQU9KdHhFMk15Y0dFdWFXNW5jbVZrYVdWdWRDNTJNd0FBQUFBWVl6SnphS09kc2RRNXJBOFAwSXB1dXUyVDdQb0FBQUJ3WTJKdmNxTnBaR002Wm05eWJXRjBiV2x0WVdkbEwzTjJaeXQ0Yld4cWFXNXpkR0Z1WTJWSlJIZ3NlRzF3T21scFpEb3lNbUk1TkRsallpMWxZamswTFRRNVlqQXRZamxtWkMxbU5HTXhNVEJpTkdNM016UnNjbVZzWVhScGIyNXphR2x3YUhCaGNtVnVkRTltQUFBQjRtcDFiV0lBQUFCQmFuVnRaR05pYjNJQUVRQVFnQUFBcWdBNG0zRVRZekp3WVM1aFkzUnBiMjV6TG5ZeUFBQUFBQmhqTW5ObzI5V3hvZkRqN0JkVUlUTTRqVlZGcXdBQUFabGpZbTl5b21kaFkzUnBiMjV6Z3FKbVlXTjBhVzl1YTJNeWNHRXViM0JsYm1Wa2FuQmhjbUZ0WlhSbGNuT2hhMmx1WjNKbFpHbGxiblJ6Z2FKamRYSnNlQzF6Wld4bUkycDFiV0ptUFdNeWNHRXVZWE56WlhKMGFXOXVjeTlqTW5CaExtbHVaM0psWkdsbGJuUXVkak5rYUdGemFGZ2dWc29Pd3Q2MWtoM3hHcW5VZ2lhUSs4VUZBOUgzT0k1UnExVnFOMWZOYjhta1ptRmpkR2x2Ym5nZFkyOXRMbUZ1ZEdoeWIzQnBZeTVqYkdGMVpHVXVjSEp2ZG1sa1pXUnFjR0Z5WVcxbGRHVnljNkY0SDJOdmJTNWhiblJvY205d2FXTXViM0pwWjJsdUxXTnZibVpwWkdWdVkyVm5kVzVyYm05M2JtdGtaWE5qY21sd2RHbHZibmhtUTJ4aGRXUmxJSEJ5YjNacFpHVmtJSFJvYVhNZ1ptbHNaU0JoZENCMGFHVWdjbVZ4ZFdWemRDQnZaaUJoSUhWelpYSWdZVzVrSUcxaGVTQm9ZWFpsSUdOeVpXRjBaV1FnYjNJZ2JXOWthV1pwWldRZ2RHaGxJR1pwYkdVZ1kyOXVkR1Z1ZEhNdWJYTnZablIzWVhKbFFXZGxiblNoWkc1aGJXVm1RMnhoZFdSbGNtRnNiRUZqZEdsdmJuTkpibU5zZFdSbFpQVUFBQURJYW5WdFlnQUFBRUJxZFcxa1kySnZjZ0FSQUJDQUFBQ3FBRGliY1JOak1uQmhMbWhoYzJndVpHRjBZUUFBQUFBWVl6SnphQ3pVWUplTnpxUWEyUHdiM2ZQSlZTa0FBQUNBWTJKdmNxVmpZV3huWm5Ob1lUSTFObU53WVdSTkFBQUFBQUFBQUFBQUFBQUFBR1JvWVhOb1dDQkx1cnptaUFSN1RzUHowOHRGRFdmUjlsK3JBcmZmdjM5UVhTWnFueEluOW1SdVlXMWxibXAxYldKbUlHMWhibWxtWlhOMGFtVjRZMngxYzJsdmJuT0JvbVZ6ZEdGeWRCaDlabXhsYm1kMGFCa2VCQUFBQWo1cWRXMWlBQUFBSjJwMWJXUmpNbU5zQUJFQUVJQUFBS29BT0p0eEEyTXljR0V1WTJ4aGFXMHVkaklBQUFBQ0QyTmliM0tsWTJGc1oyWnphR0V5TlRacGMybG5ibUYwZFhKbGVFMXpaV3htSTJwMWJXSm1QUzlqTW5CaEwzVnlianBqTW5CaE9qTmpaVEUzTVRsakxUSmtNV010TkdJd05TMDRaVFF5TFRNNE56WTVZMkZsWVRNMk5pOWpNbkJoTG5OcFoyNWhkSFZ5WldwcGJuTjBZVzVqWlVsRWVDeDRiWEE2YVdsa09qTTBaRFUxTUdaa0xUZzNaRFl0TkRGaVl5MDVNRFJoTFdZNVpUVmlOek00TnpFM05ISmpjbVZoZEdWa1gyRnpjMlZ5ZEdsdmJuT0RvbU4xY214NExYTmxiR1lqYW5WdFltWTlZekp3WVM1aGMzTmxjblJwYjI1ekwyTXljR0V1YVc1bmNtVmthV1Z1ZEM1Mk0yUm9ZWE5vV0NCV3lnN0MzcldTSGZFYXFkU0NKcEQ3eFFVRDBmYzRqbEdyVldvM1Y4MXZ5YUpqZFhKc2VDcHpaV3htSTJwMWJXSm1QV015Y0dFdVlYTnpaWEowYVc5dWN5OWpNbkJoTG1GamRHbHZibk11ZGpKa2FHRnphRmdnUW5lMVBDTW9ST0xzM2c1RkdGTDJ1aUFWVDdPd1Uyb0FxRU5Zc3A2ZlJweWlZM1Z5YkhncGMyVnNaaU5xZFcxaVpqMWpNbkJoTG1GemMyVnlkR2x2Ym5Ndll6SndZUzVvWVhOb0xtUmhkR0ZrYUdGemFGZ2dGZExZVm9CeUdxK3pNUm1rdmtRMWUvMUlqcDJ2K2UwZnV2bTAyVTk3a2N4MFkyeGhhVzFmWjJWdVpYSmhkRzl5WDJsdVptK2paRzVoYldWdlFXNTBhSEp2Y0dsaklFWnBiR1Z6WjNabGNuTnBiMjVsTVM0d0xqQnJjM0JsWTFabGNuTnBiMjVsTWk0MExqQUFBQkE0YW5WdFlnQUFBQ2hxZFcxa1l6Smpjd0FSQUJDQUFBQ3FBRGliY1FOak1uQmhMbk5wWjI1aGRIVnlaUUFBQUJBSVkySnZjdEtFV1FJU29nRW1HQ0ZaQWdvd2dnSUdNSUlCamFBREFnRUNBaFJBNWFBSzdzSTUwTDY0Zy9vR1FnVTlaMVVUQURBS0JnZ3Foa2pPUFFRREF6QkpNUmN3RlFZRFZRUUtFdzVCYm5Sb2NtOXdhV01zSUZCQ1F6RXVNQ3dHQTFVRUF4TWxRVzUwYUhKdmNHbGpJRU52Ym5SbGJuUWdRM0psWkdWdWRHbGhiSE1nVW05dmRDQkRRVEFlRncweU5qQTRNRGN4T0RRek5UWmFGdzB5T0RBNE1EWXhPVFF6TlRaYU1FUXhGekFWQmdOVkJBb1REa0Z1ZEdoeWIzQnBZeXdnVUVKRE1Ta3dKd1lEVlFRREV5QkJiblJvY205d2FXTWdRMnhoZFdSbElFTnZiblJsYm5RZ1UybG5ibWx1WnpCWk1CTUdCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQkpoNkNtdkxVQmdGRk5VMHZVS2xPVnRFNmRqZDE3TDVTdXdYMExlbUZpc0JNM2RrZC8zY3lqeEZBM1FvNVM0NmZYMC9paFkwVlo3bWZiOUtGNzAzdDVPaldEQldNQTRHQTFVZER3RUIvd1FFQXdJSGdEQVZCZ05WSFNVRURqQU1CZ29yQmdFRUFZUG9YZ0lCTUF3R0ExVWRFd0VCL3dRQ01BQXdId1lEVlIwakJCZ3dGb0FVemxIaUJJRk9aRnNqK09QRXo1bytuTUhYWE1Jd0NnWUlLb1pJemowRUF3TURad0F3WkFJd01YTWRGSjRCZXRMTFZZN09SdUU5bm9xYmJBWk9abi9hQXJYeVR3RkFaZktyUHp4RjJ2UG9KTmYxK1VDZGcxWEdBakJ3WDF6ZDlXR3FZa3FtTDVTRnF3MVF5U2pyMXpKZnBKTTkrMXJkRHdTUExNT1BPakt1aVhqb1UvcFVVZUc5UndtaFkzQmhaRmtObmdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFQWllRQ25Za0pwb0tjMmdnVTJLMU05N0hsK0kwc2lsbGYvcVVkTFRTRjZHRzhuWjFuaEswUmtGRWRwMHFKakk0ZTZaaHJKMU52ZUswQlRyTnJMd1RUMG82RWc9PC9jMnBhOm1hbmlmZXN0PjwvbWV0YWRhdGE+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9IiNFN0VFRjciLz4KPGxpbmUgeDE9IjIwMCIgeTE9IjQwIiB4Mj0iMjAwIiB5Mj0iODAiIHN0cm9rZT0iIzEzMjMzRCIgc3Ryb2tlLXdpZHRoPSI4Ii8+PGNpcmNsZSBjeD0iMjAwIiBjeT0iMzQiIHI9IjE0IiBmaWxsPSIjRDk2ODJBIi8+CjxyZWN0IHg9IjEyMCIgeT0iODAiIHdpZHRoPSIxNjAiIGhlaWdodD0iMTIwIiByeD0iMjQiIGZpbGw9IiMyQTVDOUUiLz48Y2lyY2xlIGN4PSIxNjUiIGN5PSIxMzUiIHI9IjIwIiBmaWxsPSIjN0VEM0NDIi8+PGNpcmNsZSBjeD0iMjM1IiBjeT0iMTM1IiByPSIyMCIgZmlsbD0iIzdFRDNDQyIvPjxyZWN0IHg9IjE2NSIgeT0iMTcwIiB3aWR0aD0iNzAiIGhlaWdodD0iMTAiIHJ4PSI1IiBmaWxsPSIjRjJGNUY4Ii8+CjxyZWN0IHg9IjExMCIgeT0iMjE1IiB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE1MCIgcng9IjIwIiBmaWxsPSIjMTMyMzNEIi8+PHJlY3QgeD0iMTUwIiB5PSIyNDUiIHdpZHRoPSIxMDAiIGhlaWdodD0iNjAiIHJ4PSIxMCIgZmlsbD0iIzEzODc3RiIvPgo8cmVjdCB4PSI2MCIgeT0iMjI1IiB3aWR0aD0iNDAiIGhlaWdodD0iMTIwIiByeD0iMTgiIGZpbGw9IiMyQTVDOUUiLz48cmVjdCB4PSIzMDAiIHk9IjIyNSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjEyMCIgcng9IjE4IiBmaWxsPSIjMkE1QzlFIi8+CjxyZWN0IHg9IjEzNSIgeT0iMzcwIiB3aWR0aD0iNDUiIGhlaWdodD0iMTAwIiByeD0iMTYiIGZpbGw9IiMyQTVDOUUiLz48cmVjdCB4PSIyMjAiIHk9IjM3MCIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjEwMCIgcng9IjE2IiBmaWxsPSIjMkE1QzlFIi8+PC9zdmc+Cg==", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MDAgNTAwIiB4bWxuczpjMnBhPSJodHRwOi8vYzJwYS5vcmcvbWFuaWZlc3QiPjxtZXRhZGF0YT48YzJwYTptYW5pZmVzdD5BQUFXZ21wMWJXSUFBQUFlYW5WdFpHTXljR0VBRVFBUWdBQUFxZ0E0bTNFRFl6SndZUUFBQUJaY2FuVnRZZ0FBQUVkcWRXMWtZekp0WVFBUkFCQ0FBQUNxQURpYmNRTjFjbTQ2WXpKd1lUbzRNR1V4TmpnM055MWlabU13TFRRMlpUa3RZamRpTWkweVpqWTVaVFkyWXpKa05XRUFBQUFEbDJwMWJXSUFBQUFwYW5WdFpHTXlZWE1BRVFBUWdBQUFxZ0E0bTNFRFl6SndZUzVoYzNObGNuUnBiMjV6QUFBQUFMeHFkVzFpQUFBQVJHcDFiV1JqWW05eUFCRUFFSUFBQUtvQU9KdHhFMk15Y0dFdWFXNW5jbVZrYVdWdWRDNTJNd0FBQUFBWVl6SnphRUVHRnRNejhoUXlIOHdtdDh2U3BqUUFBQUJ3WTJKdmNxTnBaR002Wm05eWJXRjBiV2x0WVdkbEwzTjJaeXQ0Yld4cWFXNXpkR0Z1WTJWSlJIZ3NlRzF3T21scFpEcGlNVGMxTkRGbVl5MDVNemc0TFRSaU9ESXRZamMyTUMxaFl6ZzJZVFV5WlRNME5tTnNjbVZzWVhScGIyNXphR2x3YUhCaGNtVnVkRTltQUFBQjRtcDFiV0lBQUFCQmFuVnRaR05pYjNJQUVRQVFnQUFBcWdBNG0zRVRZekp3WVM1aFkzUnBiMjV6TG5ZeUFBQUFBQmhqTW5Ob0dKVzhIZll3NjhQTnhHaFNxOHBabFFBQUFabGpZbTl5b21kaFkzUnBiMjV6Z3FKbVlXTjBhVzl1YTJNeWNHRXViM0JsYm1Wa2FuQmhjbUZ0WlhSbGNuT2hhMmx1WjNKbFpHbGxiblJ6Z2FKamRYSnNlQzF6Wld4bUkycDFiV0ptUFdNeWNHRXVZWE56WlhKMGFXOXVjeTlqTW5CaExtbHVaM0psWkdsbGJuUXVkak5rYUdGemFGZ2dGakw4NWNkdVpDNGtoN2F2RTZUWG5lNDdQR2tkUWY5R1cwUVNkdHFUWWpTa1ptRmpkR2x2Ym5nZFkyOXRMbUZ1ZEdoeWIzQnBZeTVqYkdGMVpHVXVjSEp2ZG1sa1pXUnFjR0Z5WVcxbGRHVnljNkY0SDJOdmJTNWhiblJvY205d2FXTXViM0pwWjJsdUxXTnZibVpwWkdWdVkyVm5kVzVyYm05M2JtdGtaWE5qY21sd2RHbHZibmhtUTJ4aGRXUmxJSEJ5YjNacFpHVmtJSFJvYVhNZ1ptbHNaU0JoZENCMGFHVWdjbVZ4ZFdWemRDQnZaaUJoSUhWelpYSWdZVzVrSUcxaGVTQm9ZWFpsSUdOeVpXRjBaV1FnYjNJZ2JXOWthV1pwWldRZ2RHaGxJR1pwYkdVZ1kyOXVkR1Z1ZEhNdWJYTnZablIzWVhKbFFXZGxiblNoWkc1aGJXVm1RMnhoZFdSbGNtRnNiRUZqZEdsdmJuTkpibU5zZFdSbFpQVUFBQURJYW5WdFlnQUFBRUJxZFcxa1kySnZjZ0FSQUJDQUFBQ3FBRGliY1JOak1uQmhMbWhoYzJndVpHRjBZUUFBQUFBWVl6SnphSG84bTVrZTAzSWROZVRiNytkdnc0QUFBQUNBWTJKdmNxVmpZV3huWm5Ob1lUSTFObU53WVdSTkFBQUFBQUFBQUFBQUFBQUFBR1JvWVhOb1dDQU0yY01UeC9tNkdiamRSdGtKb0M3Sk0zckFiU2JkOWVUS0Z2bjVOWDNUVG1SdVlXMWxibXAxYldKbUlHMWhibWxtWlhOMGFtVjRZMngxYzJsdmJuT0JvbVZ6ZEdGeWRCaDlabXhsYm1kMGFCa2VCQUFBQWo1cWRXMWlBQUFBSjJwMWJXUmpNbU5zQUJFQUVJQUFBS29BT0p0eEEyTXljR0V1WTJ4aGFXMHVkaklBQUFBQ0QyTmliM0tsWTJGc1oyWnphR0V5TlRacGMybG5ibUYwZFhKbGVFMXpaV3htSTJwMWJXSm1QUzlqTW5CaEwzVnlianBqTW5CaE9qZ3daVEUyT0RjM0xXSm1ZekF0TkRabE9TMWlOMkl5TFRKbU5qbGxOalpqTW1RMVlTOWpNbkJoTG5OcFoyNWhkSFZ5WldwcGJuTjBZVzVqWlVsRWVDeDRiWEE2YVdsa09qRTNPVEE1TURWbExXSTFOVFV0TkRjMU9DMDROREJtTFRZNVlUUXdOVE5qWlRWbE9ISmpjbVZoZEdWa1gyRnpjMlZ5ZEdsdmJuT0RvbU4xY214NExYTmxiR1lqYW5WdFltWTlZekp3WVM1aGMzTmxjblJwYjI1ekwyTXljR0V1YVc1bmNtVmthV1Z1ZEM1Mk0yUm9ZWE5vV0NBV012emx4MjVrTGlTSHRxOFRwTmVkN2pzOGFSMUIvMFpiUkJKMjJwTmlOS0pqZFhKc2VDcHpaV3htSTJwMWJXSm1QV015Y0dFdVlYTnpaWEowYVc5dWN5OWpNbkJoTG1GamRHbHZibk11ZGpKa2FHRnphRmdneXFPVklNZ051WTBYS05ENUZHUjlLbVNYNm5xZ3RxcFZEZlkxQUVFZzZSQ2lZM1Z5YkhncGMyVnNaaU5xZFcxaVpqMWpNbkJoTG1GemMyVnlkR2x2Ym5Ndll6SndZUzVvWVhOb0xtUmhkR0ZrYUdGemFGZ2c5SkJ2RGZOOFY5Qy9DRStmUlVFWHE0R2I2TjlKanlvU3N0VktNdjVlcC9KMFkyeGhhVzFmWjJWdVpYSmhkRzl5WDJsdVptK2paRzVoYldWdlFXNTBhSEp2Y0dsaklFWnBiR1Z6WjNabGNuTnBiMjVsTVM0d0xqQnJjM0JsWTFabGNuTnBiMjVsTWk0MExqQUFBQkE0YW5WdFlnQUFBQ2hxZFcxa1l6Smpjd0FSQUJDQUFBQ3FBRGliY1FOak1uQmhMbk5wWjI1aGRIVnlaUUFBQUJBSVkySnZjdEtFV1FJU29nRW1HQ0ZaQWdvd2dnSUdNSUlCamFBREFnRUNBaFJBNWFBSzdzSTUwTDY0Zy9vR1FnVTlaMVVUQURBS0JnZ3Foa2pPUFFRREF6QkpNUmN3RlFZRFZRUUtFdzVCYm5Sb2NtOXdhV01zSUZCQ1F6RXVNQ3dHQTFVRUF4TWxRVzUwYUhKdmNHbGpJRU52Ym5SbGJuUWdRM0psWkdWdWRHbGhiSE1nVW05dmRDQkRRVEFlRncweU5qQTRNRGN4T0RRek5UWmFGdzB5T0RBNE1EWXhPVFF6TlRaYU1FUXhGekFWQmdOVkJBb1REa0Z1ZEdoeWIzQnBZeXdnVUVKRE1Ta3dKd1lEVlFRREV5QkJiblJvY205d2FXTWdRMnhoZFdSbElFTnZiblJsYm5RZ1UybG5ibWx1WnpCWk1CTUdCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQkpoNkNtdkxVQmdGRk5VMHZVS2xPVnRFNmRqZDE3TDVTdXdYMExlbUZpc0JNM2RrZC8zY3lqeEZBM1FvNVM0NmZYMC9paFkwVlo3bWZiOUtGNzAzdDVPaldEQldNQTRHQTFVZER3RUIvd1FFQXdJSGdEQVZCZ05WSFNVRURqQU1CZ29yQmdFRUFZUG9YZ0lCTUF3R0ExVWRFd0VCL3dRQ01BQXdId1lEVlIwakJCZ3dGb0FVemxIaUJJRk9aRnNqK09QRXo1bytuTUhYWE1Jd0NnWUlLb1pJemowRUF3TURad0F3WkFJd01YTWRGSjRCZXRMTFZZN09SdUU5bm9xYmJBWk9abi9hQXJYeVR3RkFaZktyUHp4RjJ2UG9KTmYxK1VDZGcxWEdBakJ3WDF6ZDlXR3FZa3FtTDVTRnF3MVF5U2pyMXpKZnBKTTkrMXJkRHdTUExNT1BPakt1aVhqb1UvcFVVZUc5UndtaFkzQmhaRmtObmdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFQWllRRENZNkp2cmxWMjVIOVVjcFZMLzhjNHNvUDlCUGZwUnova0dyaENoeENYei9EZzhuV2UyRmpkam1QbndkYjhtNTI0NmZBekIrZzdZa2pMdzdBbUFBYUU9PC9jMnBhOm1hbmlmZXN0PjwvbWV0YWRhdGE+PHJlY3Qgd2lkdGg9IjQwMCIgaGVpZ2h0PSI1MDAiIGZpbGw9IiNGQ0VFRTQiLz4KPGNpcmNsZSBjeD0iMjAwIiBjeT0iMTEwIiByPSI2MiIgZmlsbD0iI0YwQzlBOCIvPjxwYXRoIGQ9Ik0xNDAgOTUgUTIwMCAzMCAyNjAgOTUgUTI1MCA2MCAyMDAgNTIgUTE1MCA2MCAxNDAgOTVaIiBmaWxsPSIjM0IyQTIwIi8+PGNpcmNsZSBjeD0iMTc4IiBjeT0iMTE1IiByPSI3IiBmaWxsPSIjMUEyMzMwIi8+PGNpcmNsZSBjeD0iMjIyIiBjeT0iMTE1IiByPSI3IiBmaWxsPSIjMUEyMzMwIi8+PHBhdGggZD0iTTE4MCAxNDAgUTIwMCAxNTUgMjIwIDE0MCIgc3Ryb2tlPSIjMUEyMzMwIiBzdHJva2Utd2lkdGg9IjUiIGZpbGw9Im5vbmUiLz4KPHJlY3QgeD0iMTMwIiB5PSIxODUiIHdpZHRoPSIxNDAiIGhlaWdodD0iMTcwIiByeD0iMzAiIGZpbGw9IiMxMzg3N0YiLz4KPHJlY3QgeD0iODAiIHk9IjE5NSIgd2lkdGg9IjQwIiBoZWlnaHQ9IjE0MCIgcng9IjE4IiBmaWxsPSIjRjBDOUE4Ii8+PHJlY3QgeD0iMjgwIiB5PSIxOTUiIHdpZHRoPSI0MCIgaGVpZ2h0PSIxNDAiIHJ4PSIxOCIgZmlsbD0iI0YwQzlBOCIvPgo8cmVjdCB4PSIxNDUiIHk9IjM1NSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjEyMCIgcng9IjE2IiBmaWxsPSIjMTMyMzNEIi8+PHJlY3QgeD0iMjEwIiB5PSIzNTUiIHdpZHRoPSI0NSIgaGVpZ2h0PSIxMjAiIHJ4PSIxNiIgZmlsbD0iIzEzMjMzRCIvPjwvc3ZnPgo=", "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2MDAgNDAwIiB4bWxuczpjMnBhPSJodHRwOi8vYzJwYS5vcmcvbWFuaWZlc3QiPjxtZXRhZGF0YT48YzJwYTptYW5pZmVzdD5BQUFXZ21wMWJXSUFBQUFlYW5WdFpHTXljR0VBRVFBUWdBQUFxZ0E0bTNFRFl6SndZUUFBQUJaY2FuVnRZZ0FBQUVkcWRXMWtZekp0WVFBUkFCQ0FBQUNxQURpYmNRTjFjbTQ2WXpKd1lUbzBZV1JoT0RKalpDMWpaV0pqTFRRME1HUXRZV014T0MwNU1EbGpNekUyWkRZM01UUUFBQUFEbDJwMWJXSUFBQUFwYW5WdFpHTXlZWE1BRVFBUWdBQUFxZ0E0bTNFRFl6SndZUzVoYzNObGNuUnBiMjV6QUFBQUFMeHFkVzFpQUFBQVJHcDFiV1JqWW05eUFCRUFFSUFBQUtvQU9KdHhFMk15Y0dFdWFXNW5jbVZrYVdWdWRDNTJNd0FBQUFBWVl6SnphTURsT2F4eFpvckJhSEJob3JJMUVLY0FBQUJ3WTJKdmNxTnBaR002Wm05eWJXRjBiV2x0WVdkbEwzTjJaeXQ0Yld4cWFXNXpkR0Z1WTJWSlJIZ3NlRzF3T21scFpEbzJOekZqTURJME5pMWlNV00yTFRSa1pXVXRPVEl4TXkxaVlXWXdZall4TnpFeE16aHNjbVZzWVhScGIyNXphR2x3YUhCaGNtVnVkRTltQUFBQjRtcDFiV0lBQUFCQmFuVnRaR05pYjNJQUVRQVFnQUFBcWdBNG0zRVRZekp3WVM1aFkzUnBiMjV6TG5ZeUFBQUFBQmhqTW5Ob0RJdUk2SmsyVFV3WURBTDlTREEydUFBQUFabGpZbTl5b21kaFkzUnBiMjV6Z3FKbVlXTjBhVzl1YTJNeWNHRXViM0JsYm1Wa2FuQmhjbUZ0WlhSbGNuT2hhMmx1WjNKbFpHbGxiblJ6Z2FKamRYSnNlQzF6Wld4bUkycDFiV0ptUFdNeWNHRXVZWE56WlhKMGFXOXVjeTlqTW5CaExtbHVaM0psWkdsbGJuUXVkak5rYUdGemFGZ2dxazBqWWpLTUJQVzlUVitWd1dnWXBuazhMekl3bVdWeGVyS2JHNk96L2hHa1ptRmpkR2x2Ym5nZFkyOXRMbUZ1ZEdoeWIzQnBZeTVqYkdGMVpHVXVjSEp2ZG1sa1pXUnFjR0Z5WVcxbGRHVnljNkY0SDJOdmJTNWhiblJvY205d2FXTXViM0pwWjJsdUxXTnZibVpwWkdWdVkyVm5kVzVyYm05M2JtdGtaWE5qY21sd2RHbHZibmhtUTJ4aGRXUmxJSEJ5YjNacFpHVmtJSFJvYVhNZ1ptbHNaU0JoZENCMGFHVWdjbVZ4ZFdWemRDQnZaaUJoSUhWelpYSWdZVzVrSUcxaGVTQm9ZWFpsSUdOeVpXRjBaV1FnYjNJZ2JXOWthV1pwWldRZ2RHaGxJR1pwYkdVZ1kyOXVkR1Z1ZEhNdWJYTnZablIzWVhKbFFXZGxiblNoWkc1aGJXVm1RMnhoZFdSbGNtRnNiRUZqZEdsdmJuTkpibU5zZFdSbFpQVUFBQURJYW5WdFlnQUFBRUJxZFcxa1kySnZjZ0FSQUJDQUFBQ3FBRGliY1JOak1uQmhMbWhoYzJndVpHRjBZUUFBQUFBWVl6SnphQVdnSzk1YUNqaHRpMnhzdGJaUXIxMEFBQUNBWTJKdmNxVmpZV3huWm5Ob1lUSTFObU53WVdSTkFBQUFBQUFBQUFBQUFBQUFBR1JvWVhOb1dDQklDMFBoSlZscmZybFRxcnQ3bmplVGtHWFhoYkJ4by9wQlQ3N044YThackdSdVlXMWxibXAxYldKbUlHMWhibWxtWlhOMGFtVjRZMngxYzJsdmJuT0JvbVZ6ZEdGeWRCaDlabXhsYm1kMGFCa2VCQUFBQWo1cWRXMWlBQUFBSjJwMWJXUmpNbU5zQUJFQUVJQUFBS29BT0p0eEEyTXljR0V1WTJ4aGFXMHVkaklBQUFBQ0QyTmliM0tsWTJGc1oyWnphR0V5TlRacGMybG5ibUYwZFhKbGVFMXpaV3htSTJwMWJXSm1QUzlqTW5CaEwzVnlianBqTW5CaE9qUmhaR0U0TW1Oa0xXTmxZbU10TkRRd1pDMWhZekU0TFRrd09XTXpNVFprTmpjeE5DOWpNbkJoTG5OcFoyNWhkSFZ5WldwcGJuTjBZVzVqWlVsRWVDeDRiWEE2YVdsa09qYzVPVEV6WWpBekxUVXlZelV0TkdFME5TMWlPREU0TFRaallUSTRaak5qTXpka05YSmpjbVZoZEdWa1gyRnpjMlZ5ZEdsdmJuT0RvbU4xY214NExYTmxiR1lqYW5WdFltWTlZekp3WVM1aGMzTmxjblJwYjI1ekwyTXljR0V1YVc1bmNtVmthV1Z1ZEM1Mk0yUm9ZWE5vV0NDcVRTTmlNb3dFOWIxTlg1WEJhQmltZVR3dk1qQ1paWEY2c3BzYm83UCtFYUpqZFhKc2VDcHpaV3htSTJwMWJXSm1QV015Y0dFdVlYTnpaWEowYVc5dWN5OWpNbkJoTG1GamRHbHZibk11ZGpKa2FHRnphRmdnWWJzTGVPZURnaXZBNHFvSFlBUTV2SzFDNXREL3dIbFc5dXZWTWZGdVQ0S2lZM1Z5YkhncGMyVnNaaU5xZFcxaVpqMWpNbkJoTG1GemMyVnlkR2x2Ym5Ndll6SndZUzVvWVhOb0xtUmhkR0ZrYUdGemFGZ2c0cFZZcjJnSVorWWVkMVgreW43aDl0RitnOFQ5cHpYcG10OTdTbWZpbXpCMFkyeGhhVzFmWjJWdVpYSmhkRzl5WDJsdVptK2paRzVoYldWdlFXNTBhSEp2Y0dsaklFWnBiR1Z6WjNabGNuTnBiMjVsTVM0d0xqQnJjM0JsWTFabGNuTnBiMjVsTWk0MExqQUFBQkE0YW5WdFlnQUFBQ2hxZFcxa1l6Smpjd0FSQUJDQUFBQ3FBRGliY1FOak1uQmhMbk5wWjI1aGRIVnlaUUFBQUJBSVkySnZjdEtFV1FJU29nRW1HQ0ZaQWdvd2dnSUdNSUlCamFBREFnRUNBaFJBNWFBSzdzSTUwTDY0Zy9vR1FnVTlaMVVUQURBS0JnZ3Foa2pPUFFRREF6QkpNUmN3RlFZRFZRUUtFdzVCYm5Sb2NtOXdhV01zSUZCQ1F6RXVNQ3dHQTFVRUF4TWxRVzUwYUhKdmNHbGpJRU52Ym5SbGJuUWdRM0psWkdWdWRHbGhiSE1nVW05dmRDQkRRVEFlRncweU5qQTRNRGN4T0RRek5UWmFGdzB5T0RBNE1EWXhPVFF6TlRaYU1FUXhGekFWQmdOVkJBb1REa0Z1ZEdoeWIzQnBZeXdnVUVKRE1Ta3dKd1lEVlFRREV5QkJiblJvY205d2FXTWdRMnhoZFdSbElFTnZiblJsYm5RZ1UybG5ibWx1WnpCWk1CTUdCeXFHU000OUFnRUdDQ3FHU000OUF3RUhBMElBQkpoNkNtdkxVQmdGRk5VMHZVS2xPVnRFNmRqZDE3TDVTdXdYMExlbUZpc0JNM2RrZC8zY3lqeEZBM1FvNVM0NmZYMC9paFkwVlo3bWZiOUtGNzAzdDVPaldEQldNQTRHQTFVZER3RUIvd1FFQXdJSGdEQVZCZ05WSFNVRURqQU1CZ29yQmdFRUFZUG9YZ0lCTUF3R0ExVWRFd0VCL3dRQ01BQXdId1lEVlIwakJCZ3dGb0FVemxIaUJJRk9aRnNqK09QRXo1bytuTUhYWE1Jd0NnWUlLb1pJemowRUF3TURad0F3WkFJd01YTWRGSjRCZXRMTFZZN09SdUU5bm9xYmJBWk9abi9hQXJYeVR3RkFaZktyUHp4RjJ2UG9KTmYxK1VDZGcxWEdBakJ3WDF6ZDlXR3FZa3FtTDVTRnF3MVF5U2pyMXpKZnBKTTkrMXJkRHdTUExNT1BPakt1aVhqb1UvcFVVZUc5UndtaFkzQmhaRmtObmdBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFQWllRT0prNmtHMmN5Z1RlUW5jSTAzdVNmSWNDTk5rK1J3dFZ5akM5ekJjREJhVTVXQllPcExBVVA0UE9OelAyMHpEWFNEaW5MWmppQzVyUlhXSGVoSmNrK0U9PC9jMnBhOm1hbmlmZXN0PjwvbWV0YWRhdGE+PHJlY3Qgd2lkdGg9IjYwMCIgaGVpZ2h0PSI0MDAiIGZpbGw9IiNGMkY1RjgiLz48cmVjdCB4PSIwIiB5PSIwIiB3aWR0aD0iNDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjQzdEMkREIi8+CjxlbGxpcHNlIGN4PSIzMzAiIGN5PSIzMDAiIHJ4PSIxOTAiIHJ5PSI0MCIgZmlsbD0iI0M3RDJERCIvPjxlbGxpcHNlIGN4PSIzMzAiIGN5PSIyNTAiIHJ4PSIxOTAiIHJ5PSI3MCIgZmlsbD0iIzEzMjMzRCIvPjxlbGxpcHNlIGN4PSIzMzAiIGN5PSIyMzUiIHJ4PSIxNTAiIHJ5PSI0NSIgZmlsbD0iIzJBNUM5RSIvPgo8Y2lyY2xlIGN4PSIyMDAiIGN5PSIyMzUiIHI9IjEyIiBmaWxsPSIjN0VEM0NDIi8+PHBhdGggZD0iTTE3NSAyMDAgUTEyMCAyMzUgMTc1IDI3MCIgc3Ryb2tlPSIjMTM4NzdGIiBzdHJva2Utd2lkdGg9IjYiIGZpbGw9Im5vbmUiLz48cGF0aCBkPSJNMTUwIDE4NSBRODAgMjM1IDE1MCAyODUiIHN0cm9rZT0iIzEzODc3RiIgc3Ryb2tlLXdpZHRoPSI2IiBmaWxsPSJub25lIiBvcGFjaXR5PSIuNiIvPgo8cGF0aCBkPSJNMzMwIDE0MCBMMzMwIDYwIE0zMTAgODAgTDMzMCA2MCBMMzUwIDgwIiBzdHJva2U9IiNEOTY4MkEiIHN0cm9rZS13aWR0aD0iMTAiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPgo="];
+(function fixImgs(o){ for(const k in o){ const v=o[k];
+  if(typeof v==='string' && v.startsWith('@img:')) o[k]=IMGS[+v.slice(5)];
+  else if(v && typeof v==='object') fixImgs(v); } })(DATA);
+const sessions = DATA.sessions, META = DATA.meta;
+const ACC = ['blue','green','pink','yellow'];
+const DOM = {knowledge:['지식','blue'], skill:['기능','green'], attitude:['태도','pink']};
+const BGS = {blue:'sky', green:'mint', pink:'pink', yellow:'cream'};
+const EXTS = ['png','jpg','jpeg','gif','webp'];
+const concepts = (META.theme && META.theme.concepts) || {};
+let cur = 0, idx = 0;
+const canvas = document.getElementById('canvas');
+
+function strip(t){ return String(t==null?'':t).replace(/\p{Extended_Pictographic}|️|‍/gu,'').replace(/[ \t]{2,}/g,' ').trim(); }
+function plain(t){ return strip(t).replace(/<br\s*\/?>/gi,' '); }
+function accentOf(s, i){
+  if (s.accent) return s.accent;
+  const key = plain(s.word||s.heading||s.title||'');
+  for (const k in concepts) if (key.includes(k)) return concepts[k];
+  return ACC[(i||0)%ACC.length];
+}
+function foot(s){ if(!s.page) return ''; const p=String(s.page); return /^\d/.test(p)?`교과서 ${p}쪽`:p; }
+function img(src, alt){
+  if(!src) return '';
+  if(/\.\*$/.test(src)){ const b=src.slice(0,-2); return `<img data-base="${b}" data-try="0" src="${b}.png" alt="${alt||''}" onerror="nextExt(this)">`; }
+  return `<img src="${src}" alt="${alt||''}">`;
+}
+function nextExt(el){
+  const i=+(el.dataset.try||0)+1;
+  if(el.dataset.base && i<EXTS.length){ el.dataset.try=i; el.src=el.dataset.base+'.'+EXTS[i]; return; }
+  const d=document.createElement('div'); d.className='ph'; d.textContent=`그림 자리: ${(el.dataset.base||el.getAttribute('src'))} (images 폴더에 넣으면 보여요)`; el.replaceWith(d);
+}
+function parseChars(origin){
+  const out=[]; const re=/([^·()]+?)\s*[(（]([㐀-鿿]+)[)）]/g; let m;
+  while((m=re.exec(origin||''))) out.push({rd:m[1].trim(), ch:m[2]});
+  return out;
+}
+function frame(s, bg, acc, inner){
+  const n = String(idx+1).padStart(2,'0');
+  const kick = `${META.unit_title||''} · ${sessions[cur].label}`;
+  return `<div class="slide bg-${bg}"><div class="topbar b-${acc}"></div><div class="kicker">${kick}</div>${inner}
+    <div class="foot">${foot(s)}</div><div class="pno">${n}</div></div>`;
+}
+function pill(text, acc){ return text?`<div class="pill b-${acc}">${strip(text)}</div>`:''; }
+
+function render(){
+  const list = sessions[cur].slides, s = list[idx], t = s.type, acc = accentOf(s, idx);
+  let h='';
+  if(t==='title'){
+    const cov = s.img || (list.find(x=>x.type==='image')||{}).src;
+    h = `<div class="slide" style="padding:0"><div class="cover"><div class="l"><div class="ck">${strip(s.kicker)}</div>
+      <h1>${strip(s.title)}</h1><div class="sub">${strip(s.lead||META.title||'')}</div><div class="pg">${strip(s.sub)}</div></div>
+      <div class="r">${img(cov,'')}</div></div></div>`;
+  } else if(t==='goals'){
+    h = frame(s,'cream','blue',`<h2 class="t">${strip(s.heading||'오늘의 학습 목표')}</h2><div class="body"><ol class="numlist">${
+      s.goals.map((g,i)=>`<li><span class="n c-${DOM[g.domain][1]}">${i+1}</span><span><span class="tagline b-${DOM[g.domain][1]}">${DOM[g.domain][0]}${g.domain===s.focus?' · 중심':''}</span>${strip(g.text)}</span></li>`).join('')}</ol></div>${pill(s.pill,'navy')}`);
+  } else if(t==='criteria'){
+    h = frame(s,'cream','green',`<h2 class="t">${strip(s.heading||'이렇게 할 수 있으면 성공')}</h2><div class="body"><div class="cols crit" style="grid-template-columns:repeat(${s.items.length},1fr)">${
+      s.items.map(c=>`<div class="col c-${DOM[c.domain][1]}"><h3>${DOM[c.domain][0]}</h3><div class="d">${strip(c.student)}</div><div class="s">아직이라면 · ${strip(c.not_yet)}</div></div>`).join('')}</div></div>`);
+  } else if(t==='word'){
+    const chars = parseChars(s.origin), han = chars.map(c=>c.ch).join('');
+    const left = han ? `<div class="hanja c-${acc}">${han}</div><div class="wkor">${strip(s.word)}</div>`
+                     : `<div class="hanja c-${acc}" style="font-size:132px">${strip(s.word)}</div><div class="wkor" style="font-size:35px;color:var(--muted)">${strip(s.origin||'')}</div>`;
+    h = frame(s,BGS[acc]||'cream',acc,`<div class="word"><div>${left}<div class="wrule b-${acc}"></div><div class="wmean">${strip(s.meaning)}</div></div>
+      <div class="chars">${chars.map(c=>`<div><div class="ch c-${acc}">${c.ch} ${c.rd.split(' ').pop()}</div><div class="rd">${c.rd}</div></div>`).join('')}
+      ${s.example?`<div class="wex">예) ${strip(s.example)}</div>`:''}</div></div>`);
+  } else if(t==='cards'){
+    const n=s.cards.length, hasImg=s.cards.some(c=>c.img);
+    h = frame(s,s.bg||'white',acc,`<h2 class="t">${strip(s.heading)}</h2><div class="body"><div class="cols" style="grid-template-columns:repeat(${n},1fr)">${
+      s.cards.map((c,i)=>{const a=accentOf({heading:c.label},i);return `<div class="col c-${a}">${hasImg?`<div class="cimg">${c.img?img(c.img,c.label):''}</div>`:''}<h3>${strip(c.label)}</h3>${s.list?`<div class="lis">${strip(c.desc).split(/<br\s*\/?>/i).filter(x=>x.trim()).map((x,k)=>`<div class="li"><b>${k+1}</b><span>${x}</span></div>`).join('')}</div>`:`<div class="d">${strip(c.desc)}</div>`}</div>`}).join('')}</div></div>${pill(s.pill,acc)}`);
+  } else if(t==='reveal'){
+    h = frame(s,'navy','yellow',`<h2 class="t">${strip(s.heading)}</h2><div class="body"><ol class="numlist" style="align-self:center;max-width:1250px">${
+      s.items.map((x,i)=>`<li style="color:#fff;opacity:0;animation:fi .5s ease ${i*0.9+0.2}s forwards"><span class="n" style="color:var(--yellow)">${i+1}</span><span>${strip(x)}</span></li>`).join('')}</ol></div>`);
+  } else if(t==='text'){
+    h = frame(s,s.bg||'cream',acc,`${s.tag?`<div class="c-${acc}" style="font-size:28px;font-weight:700;margin-top:10px">${strip(s.tag)}</div>`:''}<h2 class="t" style="margin-top:${s.tag?6:18}px">${strip(s.heading)}</h2>
+      <div class="body"><div style="font-size:52px;line-height:1.6;max-width:1300px">${strip(s.body)}</div></div>${pill(s.pill,acc)}`);
+  } else if(t==='image' || t==='stage'){
+    const side = s.points ? `<div class="side">${s.points.map((p,i)=>`<p><b class="c-${ACC[i%4]}">${i+1}</b>  ${strip(p)}</p>`).join('')}</div>`
+               : (t==='stage' ? `<div class="side ${s.big?'big':''}">${s.tag?`<div class="c-${acc}" style="font-size:35px;font-weight:700">${strip(s.tag)}</div>`:''}${s.hide?`<button class="revealbtn showans" style="align-self:flex-start;margin-top:10px">${strip(s.hide_label||'예시 답안 보기')}</button><p class="step hidans">${strip(s.body)}</p>`:`<p>${strip(s.body)}</p>`}</div>` : '');
+    h = frame(s,'white',acc,`<h2 class="t">${strip(s.heading)}</h2><div class="imgrow"><div class="imgbox ${side?'':'full'}">${img(s.src||s.img,s.heading)}<div class="cap">${strip(s.caption||'')}</div></div>${side}</div>`);
+  } else if(t==='section'){
+    h = frame(s,'navy','yellow',`<div class="body sec"><div class="sk">${strip(s.kicker||'다음에 살펴볼 내용')}</div><div class="st1">${strip(s.title)}</div>${s.sub?`<div class="ss">${strip(s.sub)}</div>`:''}${s.items?`<ol class="si">${s.items.map(x=>`<li>${strip(x)}</li>`).join('')}</ol>`:''}</div>`);
+  } else if(t==='textbook'){
+    const hl=(s.highlights||[]).map((b,k)=>`<span class="mk" style="left:${b.x}%;top:${b.y}%;width:${b.w}%;height:${b.h}%;animation-delay:${0.3+k*0.28}s"></span>`).join('');
+    const st=(s.stars||[]).map((b,k)=>`<svg class="star" viewBox="0 0 100 100" style="left:${b.x}%;top:${b.y}%;animation-delay:${0.2+k*0.28}s"><path d="M50 6 L61 38 L95 38 L67 58 L78 92 L50 71 L22 92 L33 58 L5 38 L39 38 Z" filter="url(#crayon)"/></svg>`).join('');
+    h = frame(s,'white','yellow',`<div class="c-pink" style="font-size:30px;font-weight:700;margin-top:6px">${strip(s.tag||'교과서 함께 읽기')}</div><h2 class="t" style="margin-top:4px">${strip(s.heading)}</h2><div class="tbk"><div class="tbin">${img(s.src,'교과서 본문')}${hl}${st}</div></div>`);
+  } else if(t==='compare'){
+    const dots=(side)=>s.rows.map((r,k)=>{const p=r[side+'pos']; return p?`<span class="dot c-${r.color||ACC[k%4]}" data-k="${k}" style="left:${p.x}%;top:${p.y}%"></span>`:''}).join('');
+    h = frame(s,'white','blue',`<h2 class="t">${strip(s.heading)}</h2><div class="cmp"><div class="cimgw">${img(s.left,'')}${dots('l')}<div class="clab">${strip(s.left_label||'')}</div></div>
+      <div class="crows">${s.rows.map((r,k)=>`<div class="crow step" data-k="${k}"><span class="chip b-${r.color||ACC[k%4]}">${strip(r.l)}</span><span class="cd">${strip(r.desc)}</span><span class="chip b-${r.color||ACC[k%4]}">${strip(r.r)}</span></div>`).join('')}
+      <div class="chint">화면을 누르면 하나씩 나와요</div></div>
+      <div class="cimgw">${img(s.right,'')}${dots('r')}<div class="clab">${strip(s.right_label||'')}</div></div></div>`);
+  } else if(t==='fillblank'){
+    h = frame(s,'cream',acc,`<h2 class="t">${strip(s.heading)}</h2><div class="body"><div class="seq" id="seq">${
+      s.sequence.map((v,i)=>`${i?'<span class="ar">→</span>':''}${s.imgs?`<div class="sq">${s.imgs[i]?img(s.imgs[i],''):''}`:''}<span class="it ${String(v).includes('?')?'bl':''}" data-i="${i}">${strip(v)}</span>${s.imgs?'</div>':''}`).join('')}</div>
+      <button class="revealbtn" id="rv">정답 확인</button></div>`);
+  } else if(t==='video'){
+    const m=(s.videoTitle||'').match(/\(([^,()]+),\s*([\d:]+)\)\s*$/);
+    const title=(s.videoTitle||'').replace(/\s*\([^()]*\)\s*$/,'');
+    const src = s.videoId ? `https://www.youtube.com/embed/${s.videoId}` : (s.embedUrl||'');
+    const open = s.videoId ? `https://www.youtube.com/watch?v=${s.videoId}` : (s.openUrl||s.embedUrl||'');
+    const fileMode = location.protocol==='file:' && s.videoId;
+    const inner = fileMode ? `<a class="vframe vthumb" href="${open}" target="_blank"><img src="https://i.ytimg.com/vi/${s.videoId}/hqdefault.jpg" alt=""><span class="vplay">▶ 유튜브에서 보기</span><span class="vnote">파일로 열면 유튜브가 화면 안 재생을 막아요(오류 153). '영상 안내' 탭을 보세요.</span></a>`
+      : src ? `<div class="vframe"><iframe src="${src}" title="${title}" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen></iframe></div>`
+      : `<div class="ph">영상 자리 — ${strip(s.note||'')}</div>`;
+    h = frame(s,'navy','yellow',`<h2 class="t" style="text-align:left">${strip(s.heading)}</h2><div class="vid"><div class="vmeta"><div class="dur">${m?m[2]:''}</div>
+      <div class="vt">${strip(title)}</div><div class="ch">${m?m[1]:''}</div>${open?`<a href="${open}" target="_blank">${s.videoId?'재생이 안 되면 유튜브에서 열기':'재생이 안 되면 새 창에서 열기'}</a>`:''}</div>${inner}</div>`);
+  } else if(t==='activity'){
+    const steps = strip(s.desc).split(/<br\s*\/?>/i).filter(x=>x.trim());
+    h = frame(s,'cream',acc,`<div class="c-${acc}" style="font-size:28px;font-weight:700;margin-top:10px">${strip(s.heading)}</div><h2 class="t" style="margin-top:6px">${strip(s.title)}</h2>
+      <div class="body"><div class="steps">${steps.map(x=>`<div class="st">${x}</div>`).join('')}</div>${s.materials?`<div class="mat">준비물 · ${strip(s.materials)}</div>`:''}</div>`);
+  } else if(t==='oxquiz'){
+    h = frame(s,'sky','blue',`<h2 class="t">${strip(s.heading)}</h2><div class="body qbox"><div class="q">${strip(s.q)}</div>
+      <div class="ox"><button class="o" data-v="O">O</button><button class="x" data-v="X">X</button></div><div class="ans" id="ans"></div></div>`);
+  } else if(t==='hinge'){
+    const L=['①','②','③','④','⑤'];
+    h = frame(s,'pink','pink',`<h2 class="t">${strip(s.heading||'생각 점검')}</h2><div class="q" style="font-size:47px;margin-top:24px">${strip(s.question)}</div>
+      <div class="opts">${s.options.map((o,i)=>`<button data-i="${i}">${L[i]}  ${strip(o.text)}</button>`).join('')}</div><div class="ans" id="ans" style="text-align:center"></div>
+      <button class="tbtn" id="tb">선생님 지도 팁</button><div class="tpanel" id="tp">${s.options.map((o,i)=>o.correct?`${L[i]} 정답`:`${L[i]} ${strip(o.misconception||'')} → ${strip(o.teacher_move||'')}`).join('<br>')}</div>`);
+  } else if(t==='write'||t==='exit'){
+    h = frame(s,'cream','navy',`<div class="c-blue" style="font-size:28px;font-weight:700;margin-top:10px">${t==='exit'?'출구표 · 활동지에 써요':''}</div><h2 class="t" style="margin-top:6px">${strip(s.heading||'오늘 배운 것 확인')}</h2>
+      <div class="body"><div style="font-size:50px;line-height:1.55">${strip(s.prompt)}</div><div class="line"></div><div class="line"></div></div>`);
+  } else if(t==='self_check'){
+    h = frame(s,'cream','green',`<h2 class="t">${strip(s.heading||'스스로 점검해요')}</h2><div class="body">${
+      s.items.map(x=>`<div class="selfrow"><span>${strip(x)}</span><span class="sc">잘했어요 · 해 보는 중 · 다음엔 더</span></div>`).join('')}</div>`);
+  } else if(t==='sources'){
+    h = frame(s,'white','navy',`<h2 class="t">${strip(s.heading||'자료 출처')}</h2><div class="body"><div class="src ${s.items.length>24?'dense':''}">${s.items.map(strip).join('<br>')}</div></div>`);
+  } else if(t==='closing'){
+    h = frame(s,'navy','yellow',`<div class="body" style="align-items:center;text-align:center"><div style="font-size:35px;color:var(--yellow);font-weight:700">오늘의 핵심</div>
+      <div style="font-size:76px;font-weight:700;margin-top:24px">${strip(s.title)}</div><div style="font-size:40px;color:#cfdbe6;margin-top:24px">${strip(s.sub||'')}</div></div>`);
+  } else {
+    h = frame(s,'cream','navy',`<div class="ph">알 수 없는 슬라이드: ${t}</div>`);
+  }
+  canvas.innerHTML = h;
+  document.getElementById('counter').textContent = `${idx+1} / ${list.length}`;
+  document.getElementById('pos').textContent = `${sessions[cur].label}  ${idx+1} / ${list.length}`;
+  wire(s);
+}
+function revealNext(){
+  const st=canvas.querySelector('.step:not(.on)'); if(!st) return false;
+  st.classList.add('on');
+  if(st.dataset.k!==undefined) canvas.querySelectorAll(`.dot[data-k="${st.dataset.k}"]`).forEach(d=>d.classList.add('on'));
+  if(st.classList.contains('hidans')){ const b=canvas.querySelector('.showans'); if(b) b.style.display='none'; }
+  return true;
+}
+function wire(s){
+  const sa=canvas.querySelector('.showans'); if(sa) sa.onclick=e=>{e.stopPropagation(); revealNext();};
+  if(s.type==='compare') canvas.querySelector('.cmp').onclick=()=>revealNext();
+  if(s.type==='oxquiz') canvas.querySelectorAll('.ox button').forEach(b=>b.onclick=()=>{
+    const ok=b.dataset.v===s.answer; const a=document.getElementById('ans');
+    a.textContent=(ok?'맞았어요. ':'다시 생각해 볼까요? ')+strip(s.explain||''); a.style.color=ok?'var(--green)':'var(--blue)'; });
+  if(s.type==='fillblank') document.getElementById('rv').onclick=()=>canvas.querySelectorAll('#seq .bl').forEach(e=>{e.textContent=strip(s.answer[e.dataset.i]);e.classList.remove('bl');e.style.borderColor='var(--pink)';e.style.color='var(--pink)';});
+  if(s.type==='hinge'){
+    canvas.querySelectorAll('.opts button').forEach(b=>b.onclick=()=>{const o=s.options[b.dataset.i]; b.classList.add(o.correct?'ok':'re');
+      document.getElementById('ans').textContent=o.correct?('맞았어요. '+strip(s.explain||'')):'다시 생각해 볼 답이에요. 교과서를 한 번 더 살펴봐요.';});
+    document.getElementById('tb').onclick=()=>document.getElementById('tp').classList.toggle('show');
+    document.getElementById('tp').onclick=()=>document.getElementById('tp').classList.remove('show');
+  }
+}
+function fit(){
+  const v=document.getElementById('viewport'); const k=Math.min(v.clientWidth/1600, v.clientHeight/900);
+  canvas.style.transform=`scale(${k})`;
+}
+function tabs(){
+  const el=document.getElementById('tabs');
+  if(sessions.length<2){el.innerHTML='';return;}
+  el.innerHTML=sessions.map((x,i)=>`<button class="tab ${i===cur?'active':''}" data-i="${i}">${x.label}${x.title?' · '+strip(x.title):''}</button>`).join('');
+  el.querySelectorAll('.tab').forEach(b=>b.onclick=()=>sw(+b.dataset.i));
+}
+function sw(i){ if(i<0||i>=sessions.length) return; cur=i; idx=0; tabs(); render(); }
+function go(d){ if(d>0 && revealNext()) return; const n=sessions[cur].slides.length; idx=Math.max(0,Math.min(n-1,idx+d)); render(); }
+document.getElementById('prevBtn').onclick=()=>go(-1);
+document.getElementById('nextBtn').onclick=()=>go(1);
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();go(1);}
+  if(e.key==='ArrowLeft'||e.key==='PageUp') go(-1);
+  if(/^[1-9]$/.test(e.key)) sw(+e.key-1);
+});
+const fsBtn=document.getElementById('fsBtn');
+fsBtn.onclick=()=>{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); };
+document.addEventListener('fullscreenchange',()=>{ document.body.classList.toggle('fs',!!document.fullscreenElement); fsBtn.textContent=document.fullscreenElement?'전체화면 종료':'전체화면'; setTimeout(fit,50); });
+window.addEventListener('resize',fit);
+tabs(); render(); fit();
+
+</script>
+</body>
+</html>

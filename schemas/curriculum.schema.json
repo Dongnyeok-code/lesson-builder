@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "1단계 교육과정 분석 (curriculum.json)",
+  "type": "object",
+  "required": ["lesson", "standards", "elements", "evidence_hints", "prerequisites"],
+  "properties": {
+    "lesson": {
+      "type": "object",
+      "required": ["grade", "subject", "publisher", "unit", "periods", "minutes"],
+      "properties": {
+        "grade": {"type": "integer"},
+        "subject": {"type": "string"},
+        "publisher": {"type": "string"},
+        "unit": {"type": "integer"},
+        "unit_title": {"type": "string"},
+        "periods": {"type": "array", "items": {"type": "integer"}, "minItems": 1},
+        "minutes": {"type": "integer"}
+      }
+    },
+    "standards": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["code", "official_text", "source", "cross_check", "commentary", "considerations"],
+        "properties": {
+          "code": {"type": "string", "pattern": "^\\[?\\d[가-힣]\\d{2}-\\d{2}\\]?$"},
+          "official_text": {"type": "string"},
+          "source": {"type": "string"},
+          "cross_check": {"enum": ["일치", "띄어쓰기 차이", "불일치", "단일 출처"]},
+          "commentary": {"type": "string"},
+          "considerations": {"type": "string"},
+          "is_primary": {"type": "boolean"}
+        }
+      }
+    },
+    "elements": {
+      "type": "object",
+      "required": ["knowledge", "skills", "attitudes", "label"],
+      "properties": {
+        "knowledge": {"type": "array", "items": {"type": "string"}},
+        "skills": {"type": "array", "items": {"type": "string"}},
+        "attitudes": {"type": "array", "items": {"type": "string"}},
+        "label": {"type": "string"}
+      }
+    },
+    "evidence_hints": {"type": "array", "items": {"type": "string"}, "minItems": 1},
+    "prerequisites": {"type": "array", "items": {"type": "string"}}
+  }
+}

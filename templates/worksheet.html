@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>__TITLE__</title>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+<style>
+  @page{size:A4;margin:14mm 13mm;}
+  *{box-sizing:border-box;}
+  body{font-family:'Pretendard','Noto Sans KR',sans-serif;color:#1f2d3d;font-size:11.5pt;line-height:1.6;margin:0;background:#f2f4f6;}
+  .page{background:white;max-width:210mm;margin:12px auto;padding:14mm 13mm;}
+  h1{font-family:'Jua';font-size:20pt;color:#1a8a9a;margin:0 0 4px;font-weight:400;}
+  h2{font-family:'Jua';font-size:13.5pt;color:#1a8a9a;margin:16px 0 6px;font-weight:400;break-after:avoid;page-break-after:avoid;}
+  .sub{color:#555;font-size:10.5pt;margin-bottom:10px;}
+  table{width:100%;border-collapse:collapse;margin:6px 0;}
+  th,td{border:1px solid #9aa5ad;padding:7px 9px;vertical-align:top;}
+  th{background:#e8f8f9;font-weight:700;}
+  tr,.block,.goal-box,.self{break-inside:avoid;page-break-inside:avoid;}
+  .idtable td{height:30px;}
+  .goal-box{border:2px solid #5fd0d9;border-radius:10px;padding:8px 14px;margin:8px 0;}
+  .tag{display:inline-block;font-family:'Jua';color:white;border-radius:999px;padding:0 10px;margin-right:6px;font-size:10pt;}
+  .t-knowledge{background:#1a8a9a;} .t-skill{background:#8b7fd8;} .t-attitude{background:#5cb85c;}
+  .notyet{color:#5a6b7a;font-size:9.5pt;}
+  .block{margin:10px 0;}
+  .page-ref{font-size:9pt;background:#ffd54a;color:#5a4200;border-radius:999px;padding:1px 8px;margin-left:6px;font-family:'Pretendard';}
+  .line{border-bottom:1.5px solid #9aa5ad;height:30px;}
+  .box{border:1.5px solid #9aa5ad;border-radius:8px;}
+  .choice li{margin:3px 0;}
+  .self td.face{text-align:center;width:16%;font-size:10pt;}
+  .key{break-before:page;page-break-before:always;}
+  .key h1{color:#ff6f91;}
+  @media print{body{background:white;} .page{margin:0;padding:0;max-width:none;} .noprint{display:none;}}
+  .noprint{max-width:210mm;margin:12px auto;text-align:right;}
+  .noprint button{font-family:'Jua';font-size:13pt;background:#1a8a9a;color:white;border:none;border-radius:999px;padding:8px 20px;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="noprint"><button onclick="window.print()">🖨️ 인쇄하기 (Ctrl+P)</button></div>
+__CONTENT__
+</body>
+</html>

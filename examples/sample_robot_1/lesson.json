@@ -1,0 +1,544 @@
+{
+ "meta": {
+  "title": "로봇의 세 장치 (1차시, 가상 예시)",
+  "grade": 6,
+  "subject": "실과",
+  "unit": 1,
+  "unit_title": "생활 속 로봇",
+  "periods": [
+   1
+  ],
+  "minutes": 40,
+  "lesson_type": "A-개념탐색",
+  "design": "editorial",
+  "theme": {
+   "name": "로봇 연구소 (남색·청록·은회색)",
+   "concepts": {
+    "감지 장치": "green",
+    "제어 장치": "pink",
+    "구동 장치": "blue"
+   },
+   "palette": {
+    "cream": "#F2F5F8",
+    "mint": "#E2F3F1",
+    "sky": "#E7EEF7",
+    "pinkbg": "#FCEEE4",
+    "navy": "#13233D",
+    "blue": "#2A5C9E",
+    "green": "#13877F",
+    "pink": "#D9682A",
+    "yellow": "#F0B43A",
+    "ink": "#1A2330",
+    "muted": "#5D6977",
+    "line": "#C7D2DD",
+    "lightblue": "#7ED3CC"
+   }
+  }
+ },
+ "curriculum": {
+  "lesson": {
+   "grade": 6,
+   "subject": "실과",
+   "publisher": "(가상 예시 — 실제 교과서 아님)",
+   "unit": 1,
+   "unit_title": "생활 속 로봇",
+   "periods": [
+    1
+   ],
+   "pages": "10~11",
+   "minutes": 40
+  },
+  "standards": [
+   {
+    "code": "[6실04-04]",
+    "official_text": "로봇의 개념과 구조를 이해하고, 생활 속 로봇 기능을 체험하여 로봇의 중요성을 인식한다.",
+    "source": "교육부 고시 제2022-33호 [별책 10] 실과 교육과정 (저작권법 제7조: 고시는 보호받지 않는 저작물)",
+    "cross_check": "일치",
+    "cross_check_note": "korean-elementary-learning-map-mcp get_standard officialText = korea-learning-map-mcp 원문",
+    "commentary": "없음",
+    "considerations": "(예시) 생활 속 사례와 연결해 구조를 이해하게 한다",
+    "is_primary": true
+   }
+  ],
+  "elements": {
+   "knowledge": [
+    "로봇의 세 장치: 감지·제어·구동",
+    "사람 몸과 로봇 장치의 비유"
+   ],
+   "skills": [
+    "생활 속 로봇의 장치를 나누어 설명하기"
+   ],
+   "attitudes": [
+    "생활 속 로봇에 관심 갖기"
+   ],
+   "label": "AI 추정"
+  },
+  "evidence_hints": [
+   "(예시) 로봇의 세 장치를 사람 몸에 빗대어 설명할 수 있는가"
+  ],
+  "prerequisites": [
+   "6실04-03 (같은 영역 앞 성취기준, korean-elementary-learning-map-mcp get_prerequisites)"
+  ],
+  "mcp": {
+   "curriculum-kr": "korean-elementary-learning-map-mcp get_standard/get_topic/get_prerequisites",
+   "korea-learning-map": "korea-learning-map-mcp get_topic"
+  }
+ },
+ "assessment": {
+  "objectives": {
+   "focus": "knowledge",
+   "knowledge": "로봇의 세 장치(감지·제어·구동)가 하는 일을 알고 친구에게 설명할 수 있다",
+   "skill": "청소 로봇의 움직임을 세 장치가 하는 일로 나누어 활동지에 나타낼 수 있다",
+   "attitude": "생활 속 로봇이 주는 도움을 찾아보며 친구와 나누려고 노력할 수 있다"
+  },
+  "evidence": [
+   {
+    "domain": "knowledge",
+    "type": "고르기",
+    "how": "생각 점검 문항에 답하기"
+   },
+   {
+    "domain": "skill",
+    "type": "쓰기",
+    "how": "활동지 표에 청소 로봇 장치별 하는 일 쓰기"
+   },
+   {
+    "domain": "attitude",
+    "type": "말하기",
+    "how": "생활 속 로봇 한 가지를 골라 짝에게 소개하기"
+   }
+  ],
+  "success_criteria": [
+   {
+    "domain": "knowledge",
+    "student": "나는 로봇의 세 장치가 하는 일을 설명할 수 있어요",
+    "not_yet": "사람 몸 비유 카드를 보며 하나씩 짚어 말해 봐요"
+   },
+   {
+    "domain": "skill",
+    "student": "나는 청소 로봇의 움직임을 세 장치로 나누어 쓸 수 있어요",
+    "not_yet": "'알아차리기 → 정하기 → 움직이기' 순서로 한 칸씩 채워 봐요"
+   },
+   {
+    "domain": "attitude",
+    "student": "나는 생활 속 로봇이 주는 도움을 친구와 나눌 수 있어요",
+    "not_yet": "집이나 학교에서 본 기계 하나를 떠올려 봐요"
+   }
+  ],
+  "growth_levels": {
+   "knowledge": {
+    "deepening": "세 장치를 처음 보는 로봇에도 적용해 설명함. 장치끼리 정보가 오가는 순서를 덧붙이면 더 넓어질 수 있음",
+    "achieving": "세 장치의 이름과 하는 일을 설명함. 사람 몸 비유를 함께 말하면 더 깊어질 수 있음",
+    "starting": "세 장치 이름 일부를 기억해 가고 있음. 비유 카드를 보면 설명에 다가갈 수 있음"
+   },
+   "skill": {
+    "deepening": "청소 로봇의 흐름을 화살표로 이어 쓰고 다른 로봇에도 적용함",
+    "achieving": "장치별 하는 일을 각각 씀. 순서를 화살표로 이으면 더 깊어질 수 있음",
+    "starting": "한두 칸을 채우고 있음. 예시 답안을 나란히 보면 나머지도 해낼 수 있음"
+   },
+   "attitude": {
+    "deepening": "로봇의 도움과 걱정되는 점을 함께 생각해 나눔. 다른 사람의 입장까지 생각하면 더 넓어질 수 있음",
+    "achieving": "생활 속 로봇의 도움을 한 가지 나눔. 걱정되는 점도 함께 말하면 더 깊어질 수 있음",
+    "starting": "친구의 이야기를 들으며 관심을 넓혀 가고 있음. 집에서 본 기계 하나를 떠올려 말해 보면 나눔에 다가갈 수 있음"
+   }
+  },
+  "checks": {
+   "intro": {
+    "question": "집이나 식당에서 스스로 움직이는 기계를 본 적이 있나요?",
+    "purpose": "생활 경험 떠올리기"
+   },
+   "hinge": {
+    "heading": "생각 점검",
+    "page": "11",
+    "question": "청소 로봇이 벽을 만나 <b>방향을 바꾸자</b>고 정하는 곳은 어디일까요?",
+    "explain": "정보를 받아 판단하고 명령하는 곳은 제어 장치예요.",
+    "options": [
+     {
+      "text": "제어 장치",
+      "correct": true
+     },
+     {
+      "text": "감지 장치",
+      "misconception": "알아차리는 일과 정하는 일을 같은 일로 보는 중",
+      "teacher_move": "눈은 보기만 하고 정하는 것은 두뇌라는 비유를 나란히 보여 주면 구별할 수 있습니다."
+     },
+     {
+      "text": "구동 장치",
+      "misconception": "바퀴가 스스로 방향을 정한다고 보는 중",
+      "teacher_move": "바퀴는 명령을 받아 움직인다는 것을 순서(감지→제어→구동)로 다시 짚어 주면 나아갈 수 있습니다."
+     }
+    ]
+   },
+   "exit": {
+    "question": "로봇의 세 장치 이름을 쓰고, 사람 몸의 어디와 닮았는지 이어 보세요.",
+    "domain": "knowledge"
+   }
+  },
+  "self_check": [
+   "나는 세 장치의 이름과 하는 일을 말해 보았어요",
+   "나는 청소 로봇의 움직임을 순서대로 써 보았어요",
+   "나는 친구의 생각을 끝까지 들었어요"
+  ]
+ },
+ "evidence": [
+  {
+   "id": "e1",
+   "domain": "knowledge",
+   "page": "10",
+   "type": "용어",
+   "content": "(가상 교과서) 로봇: 주변을 알아차리고, 판단하고, 움직이는 기계"
+  },
+  {
+   "id": "e2",
+   "domain": "knowledge",
+   "page": "10",
+   "type": "개념",
+   "content": "(가상 교과서) 감지 장치 = 알아차리기, 제어 장치 = 판단·명령, 구동 장치 = 움직이기"
+  },
+  {
+   "id": "e3",
+   "domain": "skill",
+   "page": "11",
+   "type": "활동",
+   "content": "(가상 교과서) 청소 로봇의 움직임을 세 장치로 나누어 표에 쓰기"
+  },
+  {
+   "id": "e4",
+   "domain": "attitude",
+   "page": "지도서 20",
+   "type": "지도 유의점",
+   "content": "(가상 지도서) 학생 경험에서 출발해 로봇을 친근하게 느끼게 한다"
+  }
+ ],
+ "figures": {
+  "robot.svg": "로봇 그림 (예시용으로 직접 그림)",
+  "human.svg": "사람 그림 (예시용으로 직접 그림)",
+  "cleaner.svg": "벽 앞의 청소 로봇 (예시용으로 직접 그림)"
+ },
+ "flow": {
+  "approved": true,
+  "teacher_note": "(예시) 교사 승인 기록 자리. 실제로는 날짜와 교사 결정(색, 넣지 않을 활동 등)을 적는다.",
+  "lesson_type": {
+   "1차시": "A-개념탐색"
+  },
+  "steps": [
+   {
+    "phase": "도입",
+    "minutes": 5,
+    "activity": "생각 열기 질문 → 학습목표",
+    "evidence_link": "도입 진단 질문",
+    "materials": "화면"
+   },
+   {
+    "phase": "전개 1",
+    "minutes": 15,
+    "activity": "사람과 로봇 비교 → 세 장치 설명 → 짝 맞추기",
+    "evidence_link": "짝 맞추기 응답",
+    "materials": "화면, 교과서 10쪽"
+   },
+   {
+    "phase": "전개 2",
+    "minutes": 15,
+    "activity": "생각 점검 → 청소 로봇 적용 활동",
+    "evidence_link": "활동지 표",
+    "materials": "활동지"
+   },
+   {
+    "phase": "정리",
+    "minutes": 5,
+    "activity": "출구표, 자기 점검",
+    "evidence_link": "출구표",
+    "materials": "활동지"
+   }
+  ],
+  "slide_plan": {
+   "1차시": {
+    "expected": 20,
+    "list": [
+     "표지",
+     "학습 목표",
+     "성공 기준",
+     "생각 열기",
+     "낱말 알기: 감지",
+     "소제목",
+     "사람과 로봇 비교",
+     "제어 장치",
+     "세 장치 카드",
+     "좋은 점·걱정되는 점",
+     "짝 맞추기",
+     "OX 퀴즈",
+     "생각 점검",
+     "소제목: 적용",
+     "청소 로봇 ① 감지(예시 답안 숨김)",
+     "활동",
+     "출구표",
+     "자기 점검",
+     "자료 출처",
+     "마무리"
+    ],
+    "note": "예시라 짧게 만들었다. 실제 차시는 30장 이상이며 교과서 본문 캡처(textbook)·영상(video) 슬라이드도 넣는다."
+   }
+  }
+ },
+ "sessions": [
+  {
+   "label": "1차시",
+   "title": "로봇의 세 장치",
+   "slides": [
+    {
+     "type": "title",
+     "kicker": "1. 생활 속 로봇 (가상 예시)",
+     "title": "1차시<br>로봇은 어떻게<br>움직일까요?",
+     "sub": "가상 예시 교과서 10~11쪽",
+     "img": "images/robot.svg",
+     "lead": "로봇의 세 장치를 알아봐요"
+    },
+    {
+     "type": "goals",
+     "page": "10~11",
+     "focus": "knowledge"
+    },
+    {
+     "type": "criteria"
+    },
+    {
+     "type": "reveal",
+     "heading": "생각 열기",
+     "items": [
+      "스스로 움직이는<br><span class='em'>기계</span>를 본 적이 있나요?",
+      "그 기계는 <span class='em'>어떻게</span> 길을 찾았을까요?"
+     ]
+    },
+    {
+     "type": "word",
+     "word": "감지",
+     "origin": "感 느낄 감 · 知 알 지",
+     "meaning": "주변의 빛, 소리, 거리 같은 것을<br><span class='em'>알아차리는</span> 것",
+     "example": "자동문은 사람이 다가오는 것을 감지해서 열려요",
+     "page": "10"
+    },
+    {
+     "type": "section",
+     "kicker": "함께 알아봐요",
+     "title": "사람과 로봇은 어디가 닮았을까요?",
+     "sub": "다음 장부터: 누를 때마다 한 줄씩 나와요",
+     "page": "10"
+    },
+    {
+     "type": "compare",
+     "heading": "사람과 로봇의 구조 비교",
+     "page": "10",
+     "left": "images/human.svg",
+     "right": "images/robot.svg",
+     "left_label": "사람",
+     "right_label": "로봇",
+     "rows": [
+      {
+       "l": "두뇌",
+       "r": "제어 장치",
+       "desc": "정보를 받아 판단하고 명령해요",
+       "color": "pink",
+       "lpos": {
+        "x": 50,
+        "y": 20
+       },
+       "rpos": {
+        "x": 50,
+        "y": 26
+       }
+      },
+      {
+       "l": "눈·귀",
+       "r": "감지 장치",
+       "desc": "주변을 알아차려요",
+       "color": "green",
+       "lpos": {
+        "x": 45,
+        "y": 23
+       },
+       "rpos": {
+        "x": 41,
+        "y": 27
+       }
+      },
+      {
+       "l": "팔·다리",
+       "r": "구동 장치",
+       "desc": "명령을 받아 움직여요",
+       "color": "blue",
+       "lpos": {
+        "x": 25,
+        "y": 53
+       },
+       "rpos": {
+        "x": 20,
+        "y": 57
+       }
+      }
+     ]
+    },
+    {
+     "type": "stage",
+     "heading": "두뇌를 닮은 제어 장치",
+     "tag": "제어 장치",
+     "src": "images/robot.svg",
+     "caption": "로봇의 두뇌",
+     "body": "받은 정보를 보고<br><span class='em'>어떻게 할지 정해서</span><br>명령을 내려요.",
+     "page": "10",
+     "big": true
+    },
+    {
+     "type": "cards",
+     "heading": "세 장치가 하는 일",
+     "page": "10",
+     "cards": [
+      {
+       "label": "감지 장치",
+       "desc": "알아차려요"
+      },
+      {
+       "label": "제어 장치",
+       "desc": "판단하고 명령해요"
+      },
+      {
+       "label": "구동 장치",
+       "desc": "움직여요"
+      }
+     ]
+    },
+    {
+     "type": "cards",
+     "heading": "로봇이 집안일을 하면?",
+     "page": "지도서 20",
+     "list": true,
+     "cards": [
+      {
+       "label": "좋은 점",
+       "desc": "시간이 남아요<br>힘든 일을 덜어요"
+      },
+      {
+       "label": "걱정되는 점",
+       "desc": "값이 비싸요<br>고장 나면 멈춰요"
+      }
+     ],
+     "pill": "좋은 점과 걱정되는 점을 함께 생각해요"
+    },
+    {
+     "type": "fillblank",
+     "heading": "짝 맞추기: 사람의 몸 → 로봇의 장치",
+     "page": "10",
+     "sequence": [
+      "두뇌 → ?",
+      "눈·귀 → ?",
+      "팔·다리 → ?"
+     ],
+     "answer": [
+      "두뇌 → 제어 장치",
+      "눈·귀 → 감지 장치",
+      "팔·다리 → 구동 장치"
+     ]
+    },
+    {
+     "type": "oxquiz",
+     "heading": "OX 퀴즈",
+     "q": "로봇의 바퀴는 스스로 갈 방향을 정한다.",
+     "answer": "X",
+     "explain": "방향은 제어 장치가 정하고, 바퀴(구동 장치)는 명령대로 움직여요."
+    },
+    {
+     "type": "hinge"
+    },
+    {
+     "type": "section",
+     "kicker": "스스로 적용해 봐요",
+     "title": "청소 로봇은 벽을 어떻게 피할까요?",
+     "page": "11"
+    },
+    {
+     "type": "stage",
+     "heading": "청소 로봇 ① 감지 장치",
+     "tag": "예시 답안",
+     "src": "images/cleaner.svg",
+     "caption": "벽을 알아차려요",
+     "body": "센서가 앞에 <span class='em'>벽이 있다</span>는 것을 알아차려요.",
+     "page": "11",
+     "big": true,
+     "hide": true
+    },
+    {
+     "type": "activity",
+     "heading": "역량을 키우는 활동",
+     "page": "11",
+     "title": "청소 로봇 설명서 만들기",
+     "desc": "청소 로봇의 세 장치가 하는 일을<br>활동지 표에 써요.",
+     "materials": "활동지"
+    },
+    {
+     "type": "exit"
+    },
+    {
+     "type": "self_check"
+    },
+    {
+     "type": "sources"
+    },
+    {
+     "type": "closing",
+     "title": "수고했어요!",
+     "sub": "감지 → 제어 → 구동을 기억해요"
+    }
+   ]
+  }
+ ],
+ "media": [
+  {
+   "type": "placeholder",
+   "file": "성취기준",
+   "source": "교육부 고시 제2022-33호 [별책 10], 국가교육과정정보센터(NCIC)",
+   "credit": "성취기준 원문"
+  },
+  {
+   "type": "image",
+   "file": "images/robot.svg",
+   "source": "lesson-builder 예시용으로 직접 그림",
+   "license": "MIT (이 저장소)",
+   "credit": "로봇 그림"
+  },
+  {
+   "type": "image",
+   "file": "images/human.svg",
+   "source": "lesson-builder 예시용으로 직접 그림",
+   "license": "MIT (이 저장소)",
+   "credit": "사람 그림"
+  },
+  {
+   "type": "image",
+   "file": "images/cleaner.svg",
+   "source": "lesson-builder 예시용으로 직접 그림",
+   "license": "MIT (이 저장소)",
+   "credit": "청소 로봇 그림"
+  }
+ ],
+ "worksheet": {
+  "sections": [
+   {
+    "type": "text",
+    "title": "활동. 청소 로봇 설명서 만들기",
+    "page": "11",
+    "text": "청소 로봇이 벽을 만났을 때 각 장치가 하는 일을 써 보세요."
+   },
+   {
+    "type": "table",
+    "columns": [
+     "장치",
+     "청소 로봇에서 하는 일"
+    ],
+    "rows": [
+     "감지 장치",
+     "제어 장치",
+     "구동 장치"
+    ]
+   }
+  ]
+ }
+}

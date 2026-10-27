@@ -1,0 +1,49 @@
+{
+ "lesson": {
+  "grade": 6,
+  "subject": "실과",
+  "publisher": "(가상 예시 — 실제 교과서 아님)",
+  "unit": 1,
+  "unit_title": "생활 속 로봇",
+  "periods": [
+   1
+  ],
+  "pages": "10~11",
+  "minutes": 40
+ },
+ "standards": [
+  {
+   "code": "[6실04-04]",
+   "official_text": "로봇의 개념과 구조를 이해하고, 생활 속 로봇 기능을 체험하여 로봇의 중요성을 인식한다.",
+   "source": "교육부 고시 제2022-33호 [별책 10] 실과 교육과정 (저작권법 제7조: 고시는 보호받지 않는 저작물)",
+   "cross_check": "일치",
+   "cross_check_note": "korean-elementary-learning-map-mcp get_standard officialText = korea-learning-map-mcp 원문",
+   "commentary": "없음",
+   "considerations": "(예시) 생활 속 사례와 연결해 구조를 이해하게 한다",
+   "is_primary": true
+  }
+ ],
+ "elements": {
+  "knowledge": [
+   "로봇의 세 장치: 감지·제어·구동",
+   "사람 몸과 로봇 장치의 비유"
+  ],
+  "skills": [
+   "생활 속 로봇의 장치를 나누어 설명하기"
+  ],
+  "attitudes": [
+   "생활 속 로봇에 관심 갖기"
+  ],
+  "label": "AI 추정"
+ },
+ "evidence_hints": [
+  "(예시) 로봇의 세 장치를 사람 몸에 빗대어 설명할 수 있는가"
+ ],
+ "prerequisites": [
+  "6실04-03 (같은 영역 앞 성취기준, korean-elementary-learning-map-mcp get_prerequisites)"
+ ],
+ "mcp": {
+  "curriculum-kr": "korean-elementary-learning-map-mcp get_standard/get_topic/get_prerequisites",
+  "korea-learning-map": "korea-learning-map-mcp get_topic"
+ }
+}

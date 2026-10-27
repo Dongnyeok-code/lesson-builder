@@ -1,0 +1,16 @@
+{
+ "grade": 6,
+ "subject": "실과",
+ "publisher": "(가상 예시 — 실제 교과서 아님)",
+ "unit": 1,
+ "unit_title": "생활 속 로봇",
+ "periods": [
+  1
+ ],
+ "pages": "10~11",
+ "minutes_per_period": 40,
+ "textbook_pdf": "(예시에는 없음) 교과서.pdf",
+ "guide_pdf": "(예시에는 없음) 지도서.pdf",
+ "unit_md": "1단원.md",
+ "note": "형식을 보여 주려고 만든 가상 예시입니다. 교과서 쪽 번호와 본문은 모두 지어낸 것입니다."
+}

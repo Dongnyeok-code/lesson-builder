@@ -1,0 +1,38 @@
+{
+ "evidence": [
+  {
+   "id": "e1",
+   "domain": "knowledge",
+   "page": "10",
+   "type": "용어",
+   "content": "(가상 교과서) 로봇: 주변을 알아차리고, 판단하고, 움직이는 기계"
+  },
+  {
+   "id": "e2",
+   "domain": "knowledge",
+   "page": "10",
+   "type": "개념",
+   "content": "(가상 교과서) 감지 장치 = 알아차리기, 제어 장치 = 판단·명령, 구동 장치 = 움직이기"
+  },
+  {
+   "id": "e3",
+   "domain": "skill",
+   "page": "11",
+   "type": "활동",
+   "content": "(가상 교과서) 청소 로봇의 움직임을 세 장치로 나누어 표에 쓰기"
+  },
+  {
+   "id": "e4",
+   "domain": "attitude",
+   "page": "지도서 20",
+   "type": "지도 유의점",
+   "content": "(가상 지도서) 학생 경험에서 출발해 로봇을 친근하게 느끼게 한다"
+  }
+ ],
+ "figures": {
+  "robot.svg": "로봇 그림 (예시용으로 직접 그림)",
+  "human.svg": "사람 그림 (예시용으로 직접 그림)",
+  "cleaner.svg": "벽 앞의 청소 로봇 (예시용으로 직접 그림)"
+ },
+ "reference_videos_qr": []
+}
