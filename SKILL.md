@@ -18,7 +18,13 @@ AI가 바로 자료를 만들지 않는다. **성취기준 → 평가 → 교과
 
 ## 스킬 폴더와 준비물
 
-- 스킬 폴더: 이 SKILL.md가 있는 폴더 (예: `~/수업/스킬/lesson-builder`). 이 문서의 `scripts/…`, `templates/…`, `references/…`는 모두 **스킬 폴더 기준** 경로다. 명령은 스킬 폴더로 이동(`cd`)한 뒤 실행한다.
+이 문서의 `scripts/…`, `templates/…`, `references/…`, `schemas/…`는 모두 **스킬 폴더 기준** 경로다. 작업을 시작하기 전에 스킬 폴더를 이 순서로 찾고, 명령은 그 폴더로 이동(`cd`)한 뒤 실행한다.
+
+1. 이 SKILL.md와 같은 폴더에 `scripts/build.py`가 있으면 그 폴더
+2. 교사 컴퓨터의 `~/수업/스킬/lesson-builder` (연결된 폴더에서 `ls -d "$HOME"/mnt/*/*/lesson-builder`로 찾음)
+3. 둘 다 없으면 공개 저장소를 받는다: `git clone --depth 1 https://github.com/Dongnyeok-code/lesson-builder`
+
+찾은 폴더의 규칙 문서(`references/`)를 0단계 전에 읽는다. 스킬 폴더를 찾지 못하면 자료를 만들지 말고 교사에게 알린다.
 - 새 환경에서 처음 쓸 때: `python3 scripts/doctor.py` → 없는 도구와 영향받는 단계를 알려 준다.
 
 | 폴더 | 들어 있는 것 |
