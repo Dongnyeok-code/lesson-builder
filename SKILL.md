@@ -170,6 +170,7 @@ MCP가 연결되어 있지 않으면 단원 md와 지도서만으로 진행하�
    - `cards`에 `list: true`: 설명 줄마다 번호 + 옅은 상자 (좋은 점/걱정되는 점 비교)
    - `stage`에 `big: true`: 설명 글씨 크게 / `hide: true`: '예시 답안 보기'를 눌러야 설명이 나옴 (→ 키로도 공개)
    - `fillblank` 칸에 `?`가 들어가면 빈칸으로 처리 (예: "두뇌 → ?")
+   - `reveal`에 `answer`: '정답 보기' 버튼을 눌러야 정답이 나옴 (예측 질문용, 7단원 4~9차시에서 생김)
    `goals`·`criteria`·`hinge`·`exit`·`self_check`·`sources`는 내용을 비워 두면 assessment·media에서 자동으로 채운다.
 6. 활동지 섹션(`worksheet.sections[].type`): write, box, table, choice, text. 학습목표·출구표·자기 점검·성공 기준은 자동으로 들어간다.
 7. 결과: `{차시}_화면용.html`, `{차시}_활동지.html`, `{차시}_수업안.md`. 형식 예시는 `examples/sample_robot_1/` (0~8단계 파일 전체를 담은 가상 예시, README.md 참고).

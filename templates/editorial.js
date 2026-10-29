@@ -71,7 +71,7 @@ function render(){
       s.cards.map((c,i)=>{const a=accentOf({heading:c.label},i);return `<div class="col c-${a}">${hasImg?`<div class="cimg">${c.img?img(c.img,c.label):''}</div>`:''}<h3>${strip(c.label)}</h3>${s.list?`<div class="lis">${strip(c.desc).split(/<br\s*\/?>/i).filter(x=>x.trim()).map((x,k)=>`<div class="li"><b>${k+1}</b><span>${x}</span></div>`).join('')}</div>`:`<div class="d">${strip(c.desc)}</div>`}</div>`}).join('')}</div></div>${pill(s.pill,acc)}`);
   } else if(t==='reveal'){
     h = frame(s,'navy','yellow',`<h2 class="t">${strip(s.heading)}</h2><div class="body"><ol class="numlist" style="align-self:center;max-width:1250px">${
-      s.items.map((x,i)=>`<li style="color:#fff;opacity:0;animation:fi .5s ease ${i*0.9+0.2}s forwards"><span class="n" style="color:var(--yellow)">${i+1}</span><span>${strip(x)}</span></li>`).join('')}</ol></div>`);
+      s.items.map((x,i)=>`<li style="color:#fff;opacity:0;animation:fi .5s ease ${i*0.9+0.2}s forwards"><span class="n" style="color:var(--yellow)">${i+1}</span><span>${strip(x)}</span></li>`).join('')}</ol>${s.answer?`<div style="align-self:center;text-align:center;margin-top:24px"><button class="revealbtn showans">${strip(s.answer_label||'정답 보기')}</button><p class="step hidans" style="color:#fff;font-size:56px;font-weight:700;margin-top:8px">${strip(s.answer)}</p></div>`:''}</div>`);
   } else if(t==='text'){
     h = frame(s,s.bg||'cream',acc,`${s.tag?`<div class="c-${acc}" style="font-size:28px;font-weight:700;margin-top:10px">${strip(s.tag)}</div>`:''}<h2 class="t" style="margin-top:${s.tag?6:18}px">${strip(s.heading)}</h2>
       <div class="body"><div style="font-size:52px;line-height:1.6;max-width:1300px">${strip(s.body)}</div></div>${pill(s.pill,acc)}`);
